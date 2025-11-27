@@ -1,35 +1,58 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import "./Login.css";
 
 export default function Login() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
-    // Simulación de autenticación
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+
     setTimeout(() => {
-      if (email && password) {
-        console.log('Login exitoso:', { email, password });
+      if (!storedUser) {
+        setError("No hay usuarios registrados.");
         setLoading(false);
-        // Redirigir o guardar sesión
-      } else {
-        setError('Por favor completa todos los campos');
-        setLoading(false);
+        return;
       }
-    }, 1500);
+
+      // Validar email
+      if (email !== storedUser.email) {
+        setError("El correo no coincide con ningún usuario registrado.");
+        setLoading(false);
+        return;
+      }
+
+      // Validar contraseña
+      if (password !== storedUser.password) {
+        setError("La contraseña es incorrecta.");
+        setLoading(false);
+        return;
+      }
+
+      console.log("Login exitoso:", storedUser);
+      setLoading(false);
+
+      // Redirigir a la página de bienvenida
+      navigate('/bienvenido');
+
+    }, 1200);
   };
 
   return (
     <div className="login-container">
       <div className="login-wrapper">
+        
         {/* Left Side - Branding */}
         <div className="login-brand">
           <div className="brand-content">
@@ -64,7 +87,8 @@ export default function Login() {
             {error && <div className="error-message">{error}</div>}
 
             <form onSubmit={handleSubmit} className="login-form">
-              {/* Email Input */}
+              
+              {/* Email */}
               <div className="form-group">
                 <label htmlFor="email">Correo Electrónico</label>
                 <div className="input-wrapper">
@@ -75,12 +99,11 @@ export default function Login() {
                     placeholder="tu@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    required
                   />
                 </div>
               </div>
 
-              {/* Password Input */}
+              {/* Password */}
               <div className="form-group">
                 <label htmlFor="password">Contraseña</label>
                 <div className="input-wrapper">
@@ -91,7 +114,6 @@ export default function Login() {
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    required
                   />
                   <button
                     type="button"
@@ -103,7 +125,7 @@ export default function Login() {
                 </div>
               </div>
 
-              {/* Remember & Forgot */}
+              {/* Options */}
               <div className="form-options">
                 <label className="remember-me">
                   <input type="checkbox" />
@@ -112,7 +134,7 @@ export default function Login() {
                 <a href="#" className="forgot-password">¿Olvidaste tu contraseña?</a>
               </div>
 
-              {/* Submit Button */}
+              {/* Button */}
               <button
                 type="submit"
                 className={`submit-btn ${loading ? 'loading' : ''}`}
@@ -137,28 +159,20 @@ export default function Login() {
               <span>O continúa con</span>
             </div>
 
-            {/* Social Login */}
+            {/* Social */}
             <div className="social-login">
-              <button className="social-btn google">
-                <svg viewBox="0 0 24 24" width="20" height="20">
-                  <text x="50%" y="50%" dominantBaseline="middle" textAnchor="middle" fill="currentColor">G</text>
-                </svg>
-                Google
-              </button>
-              <button className="social-btn github">
-                <svg viewBox="0 0 24 24" width="20" height="20">
-                  <text x="50%" y="50%" dominantBaseline="middle" textAnchor="middle" fill="currentColor">★</text>
-                </svg>
-                GitHub
-              </button>
+              <button className="social-btn google">Google</button>
+              <button className="social-btn github">GitHub</button>
             </div>
 
-            {/* Sign Up Link */}
+            {/* Link */}
             <p className="signup-link">
               ¿No tienes cuenta? <a href="/register">Regístrate aquí</a>
             </p>
+
           </div>
         </div>
+
       </div>
     </div>
   );
