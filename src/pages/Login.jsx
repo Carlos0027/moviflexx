@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import "./Login.css";
 
 export default function Login() {
@@ -10,7 +9,6 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -30,12 +28,9 @@ export default function Login() {
       if (email !== storedUser.email) {
         setError("El correo no coincide con ningún usuario registrado.");
         setLoading(false);
-        return;
-      }
-
-      // Validar contraseña
-      if (password !== storedUser.password) {
-        setError("La contraseña es incorrecta.");
+        // Redirigir o guardar sesión
+      } else {
+        setError('Por favor completa todos los campos');
         setLoading(false);
         return;
       }
