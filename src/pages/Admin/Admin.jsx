@@ -1,6 +1,6 @@
 import React from 'react';
 import { Menu, X } from 'lucide-react';
-import {     Link } from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
 import "./Admin.css";
 import EsperaImg from "../Imagenes/Waiting.png";
 import UsuariosImg from "../Imagenes/Usuarios.jpg";
@@ -10,7 +10,23 @@ import Map from '../Imagenes/Map.png';
 
 function Admin() {
   const [menuOpen, setMenuOpen] = React.useState(false);
+  const navigate = useNavigate();
 
+  const handleUsersClick = () => {
+    navigate('/admin/usuarios');
+  };
+
+  const handleDriversClick = () => {
+    navigate('/admin/conductores');
+  };
+
+  const handleVehiclesClick = () => {
+    navigate('/admin/vehiculos');
+  };
+
+  const handleWaitingClick = () => {
+    navigate('/admin/espera');
+  };
   return (
     <div className="admin-container">
       {/* Navbar */}
@@ -32,29 +48,8 @@ function Admin() {
                 Cerrar Sesión
             </Link>
         </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            className="menu-toggle"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle menu"
-          >
-            {menuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
         </div>
       </div>
-
-      {menuOpen && (
-        <div>
-          <ul>
-            <li>
-              <Link to="/" onClick={() => setMenuOpen(false)}>
-                Inicio
-              </Link>
-            </li>
-          </ul>
-        </div>
-      )}
 
       {/* Contenido de la página Admin */}
       <div className="admin-content">
@@ -64,7 +59,7 @@ function Admin() {
         {/* Grid de tarjetas */}
         <div className="admin-cards-grid">
           {/* Tarjeta de usuarios */}
-          <div className="admin-card users">
+          <div className="admin-card users" onClick={handleUsersClick}>
             <div className="card-image">
               <img src={UsuariosImg} alt="Icono de usuarios" />
             </div>
@@ -77,7 +72,7 @@ function Admin() {
           </div>
 
           {/* Tarjeta de conductores */}
-          <div className="admin-card drivers">
+          <div className="admin-card drivers" onClick={handleDriversClick}>
             <div className="card-image">
               <img src={ConductoresImg} alt="Icono de conductores" />
             </div>
@@ -90,7 +85,7 @@ function Admin() {
           </div>
 
           {/* Tarjeta de vehículos */}
-          <div className="admin-card vehicles">
+          <div className="admin-card vehicles" onClick={handleVehiclesClick}>
             <div className="card-image">
               <img src={VehiculosImg} alt="Icono de conductores" />
             </div>
@@ -103,7 +98,7 @@ function Admin() {
           </div>
 
           {/* Tarjeta de usuarios en espera */}
-          <div className="admin-card waiting">
+          <div className="admin-card waiting" onClick={handleWaitingClick}>
             <div className="card-image">
               <img src={EsperaImg} alt="Icono de conductores" />
             </div>
