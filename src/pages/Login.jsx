@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom'; // ✅ Agregar useNavigate
 import "./Login.css";
 
 export default function Login() {
@@ -8,6 +9,7 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const navigate = useNavigate(); // ✅ Hook para navegación
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -19,7 +21,8 @@ export default function Login() {
       if (email && password) {
         console.log('Login exitoso:', { email, password });
         setLoading(false);
-        // Redirigir o guardar sesión
+        // ✅ Redirigir al dashboard después del login exitoso
+        navigate('/dashboard');
       } else {
         setError('Por favor completa todos los campos');
         setLoading(false);
