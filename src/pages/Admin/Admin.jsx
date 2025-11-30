@@ -38,12 +38,6 @@ function Admin() {
             MoviFlexx
           </Link>
           <div className="nav-auth">
-            <Link to="/rutas" className="nav-btn-register">
-                <div className="nav-icon">
-                    <img src={Map} alt="Mapa" />
-                </div>
-                Ver Rutas
-            </Link>
             <Link to="/" className="nav-link-login">
                 Cerrar Sesión
             </Link>
@@ -94,18 +88,6 @@ function Admin() {
               <p>Vehículos registrados: </p>
               <p>Vehículos activos hoy: </p>
               <p>Nuevos vehículos esta semana: </p>
-            </div>
-          </div>
-
-          {/* Tarjeta de usuarios en espera */}
-          <div className="admin-card waiting" onClick={handleWaitingClick}>
-            <div className="card-image">
-              <img src={EsperaImg} alt="Icono de conductores" />
-            </div>
-            <h3>Lista de Usuarios en espera</h3>
-            <div className="card-content">
-              <p>Usuarios en espera: 34</p>
-              <p>Espera promedio: 5 min</p>
             </div>
           </div>
         </div>

@@ -134,3 +134,52 @@
         font-size: 0.8rem;
     }
 }
+
+.estado-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.estado-badge.activo {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.estado-badge.inactivo {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.estado-badge.pendiente {
+    background-color: #fff3cd;
+    color: #856404;
+}
+.estado-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.estado-badge.disponible {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.estado-badge.no-disponible {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.estado-badge.en-viaje {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.estado-badge.suspendido {
+    background-color: #e2e3e5;
+    color: #383d41;
+}

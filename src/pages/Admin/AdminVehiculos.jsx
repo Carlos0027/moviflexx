@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Map from '../Imagenes/Map.png';
-import "./AdminConductores.css"; // MISMO ARCHIVO CSS
+import "./AdminConductores.css";
 
 function AdminVehiculos(){
-
     const [vehiculos, setVehiculos] = useState([]);
     
     useEffect(()=> {
@@ -17,8 +16,8 @@ function AdminVehiculos(){
             headers: {
                 "Content-Type":"application/json"
             }
-        }).then(response=> response.json())
-        .then(data=> setVehiculos(data));
+        }).then(response => response.json())
+        .then(data => setVehiculos(data));
     }
 
     async function eliminarVehiculo(id) {
@@ -32,7 +31,7 @@ function AdminVehiculos(){
     }
 
     return(
-        <div className="admin-conductores-container"> {/* MISMA CLASE */}
+        <div className="admin-conductores-container">
             {/* Navbar */}
             <div className="admin-nav">
                 <div className="nav-container">
@@ -42,12 +41,6 @@ function AdminVehiculos(){
                         MoviFlexx
                     </Link>
                     <div className="nav-auth">
-                        <Link to="/rutas" className="nav-btn-register">
-                            <div className="nav-icon">
-                                <img src={Map} alt="Mapa" />
-                            </div>
-                            Ver Rutas
-                        </Link>
                         <Link to="/" className="nav-link-login">
                             Cerrar Sesión
                         </Link>
@@ -56,32 +49,34 @@ function AdminVehiculos(){
             </div>
 
             {/* Contenido */}
-            <div className="conductores-content"> {/* MISMA CLASE */}
+            <div className="conductores-content">
                 <h1 className="page-title">Lista de Vehículos</h1>
                 
                 {/* Tabla con estilos */}
                 <div className="table-container">
-                    <table className="conductores-table"> {/* MISMA CLASE */}
+                    <table className="conductores-table">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Teléfono</th>
-                                <th>Archivos</th>
+                                <th>Placa</th>
+                                <th>Modelo</th>
+                                <th>Año</th>
+                                <th>ID Conductor</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {vehiculos.map((vehiculo)=>(
-                                <tr key={vehiculo.id} className="table-row">
-                                    <td className="table-cell">{vehiculo.id}</td>
-                                    <td className="table-cell">{vehiculo.nombre}</td>
-                                    <td className="table-cell">{vehiculo.telefono}</td>
-                                    <td className="table-cell">{vehiculo.archivos}</td>
+                            {vehiculos.map((vehiculo) => (
+                                <tr key={vehiculo.idVehiculo} className="table-row">
+                                    <td className="table-cell">{vehiculo.idVehiculo}</td>
+                                    <td className="table-cell">{vehiculo.placa}</td>
+                                    <td className="table-cell">{vehiculo.modelo}</td>
+                                    <td className="table-cell">{vehiculo.anio}</td>
+                                    <td className="table-cell">{vehiculo.conductorId}</td>
                                     <td className="table-cell actions">
                                         <button 
                                             className="delete-btn"
-                                            onClick={() => eliminarVehiculo(vehiculo.id)}
+                                            onClick={() => eliminarVehiculo(vehiculo.idVehiculo)}
                                         >
                                             Eliminar
                                         </button>
