@@ -11,7 +11,6 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -45,7 +44,6 @@ export default function Login() {
 
       // Redirigir a la página de bienvenida
       navigate('/bienvenido');
-
     }, 1200);
   };
 
