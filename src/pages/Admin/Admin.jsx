@@ -2,11 +2,9 @@ import React from 'react';
 import { Menu, X } from 'lucide-react';
 import { Link, useNavigate} from 'react-router-dom';
 import "./Admin.css";
-import EsperaImg from "../Imagenes/Waiting.png";
 import UsuariosImg from "../Imagenes/Usuarios.jpg";
 import VehiculosImg from "../Imagenes/vehiculo.png";
 import ConductoresImg from "../Imagenes/conductores.png";
-import Map from '../Imagenes/Map.png';
 
 function Admin() {
   const [menuOpen, setMenuOpen] = React.useState(false);
@@ -22,10 +20,6 @@ function Admin() {
 
   const handleVehiclesClick = () => {
     navigate('/admin/vehiculos');
-  };
-
-  const handleWaitingClick = () => {
-    navigate('/admin/espera');
   };
   return (
     <div className="admin-container">

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Map from '../Imagenes/Map.png';
 import "./AdminConductores.css";
 
 function AdminConductores(){
