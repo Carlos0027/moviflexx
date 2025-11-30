@@ -11,7 +11,6 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -20,8 +19,16 @@ export default function Login() {
     const storedUser = JSON.parse(localStorage.getItem("user"));
 
     setTimeout(() => {
+      // Primero verificar si hay usuario registrado
       if (!storedUser) {
         setError("No hay usuarios registrados.");
+        setLoading(false);
+        return;
+      }
+
+      // Validar campos completos
+      if (!email || !password) {
+        setError('Por favor completa todos los campos');
         setLoading(false);
         return;
       }
@@ -43,8 +50,8 @@ export default function Login() {
       console.log("Login exitoso:", storedUser);
       setLoading(false);
 
-      // Redirigir a la página de bienvenida
-      navigate('/bienvenido');
+      // Redirigir al dashboard después del login exitoso
+      navigate('/dashboard');
 
     }, 1200);
   };
@@ -99,6 +106,7 @@ export default function Login() {
                     placeholder="tu@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    required
                   />
                 </div>
               </div>
@@ -114,6 +122,7 @@ export default function Login() {
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    required
                   />
                   <button
                     type="button"
