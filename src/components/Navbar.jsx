@@ -17,9 +17,7 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <ul className="nav-links">
-          <li>
-            <Link to="/">Inicio</Link>
-          </li>
+        
           <li>
             <a href="#features">Features</a>
           </li>

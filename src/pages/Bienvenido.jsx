@@ -1,15 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Users, Car, Zap, MapPin, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import "./Bienvenido.css";
 
 export default function Bienvenido() {
+  const navigate = useNavigate();
+  const [userName, setUserName] = useState('Usuario');
+
+  useEffect(() => {
+    // Obtener datos del usuario desde localStorage
+    const storedUser = localStorage.getItem("user");
+    
+    if (storedUser) {
+      try {
+        const userData = JSON.parse(storedUser);
+        setUserName(userData.fullName || 'Usuario');
+      } catch (error) {
+        console.error("Error parsing user data:", error);
+        setUserName('Usuario');
+      }
+    } else {
+      // Si no hay usuario, redirigir al login
+      navigate('/login');
+    }
+  }, [navigate]);
+
   return (
     <div className="welcome-container">
       <div className="welcome-content">
 
         <div className="welcome-header">
-          <h1>Panel de Administración 👑</h1>
+          <h1>Bienvenido a MoviFlexx, {userName}! 🎉</h1>
           <p>Gestiona usuarios, rutas, vehículos y más</p>
         </div>
 
@@ -41,7 +62,7 @@ export default function Bienvenido() {
 
         </div>
 
-        <Link to="/admin" className="welcome-button">
+        <Link to="/dashboard" className="welcome-button">
           Ir al Panel
           <ArrowRight size={20} />
         </Link>

@@ -42,7 +42,7 @@
 .nav-logo {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 50px;
   font-size: 1.6rem;
   font-weight: 800;
   color: var(--text-dark);

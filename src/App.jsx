@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Bienvenido from "./pages/Bienvenido";
 import Dashboard from "./pages/Dashboard";
+import Perfil from "./pages/Perfil"; // ← IMPORTAR EL COMPONENTE DE PERFIL
 import Admin from "./pages/Admin/Admin";
 import AdminConductores from "./pages/Admin/AdminConductores";
 import AdminUsuarios from "./pages/Admin/AdminUsuarios";
@@ -25,41 +26,36 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Rutas de Admin */}
+        {/* Rutas de Admin (sin Navbar) */}
         <Route path="/admin" element={<Admin />} />
         <Route path="/admin/conductores" element={<AdminConductores />} />
         <Route path="/admin/usuarios" element={<AdminUsuarios />} />
         <Route path="/admin/vehiculos" element={<AdminVehiculos />} />
+
+        {/* RUTAS CON NAVBAR */}
+        <Route path="/" element={<><Navbar /><HomeBase /></>} />
+        <Route path="/login" element={<><Navbar /><Login /></>} />
+        <Route path="/register" element={<><Navbar /><Register /></>} />
+        <Route path="/bienvenido" element={<><Navbar /><Bienvenido /></>} />
+        <Route path="/bienvenido-pasajero" element={<><Navbar /><Bienvenido /></>} />
+        <Route path="/bienvenido-conductor" element={<><Navbar /><Bienvenido /></>} />
+
+        {/* RUTAS SIN NAVBAR (Dashboard & Módulos) */}
+        <Route path="/dashboard" element={<Dashboard />} />
         
-        {/* Rutas principales con Navbar */}
-        <Route path="/*" element={
-          <>
-            <Navbar />
-            <Routes>
-              {/* Rutas públicas */}
-              <Route path="/" element={<HomeBase />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/bienvenido" element={<Bienvenido />} />
-              <Route path="/bienvenido-pasajero" element={<Bienvenido />} />
-              <Route path="/bienvenido-conductor" element={<Bienvenido />} />
-              
-              {/* Rutas protegidas después del login */}
-              <Route path="/dashboard" element={<Dashboard />} />
-              
-              {/* Rutas de módulos específicos */}
-              <Route path="/solicitud-viaje" element={<SolicitudViaje />} />
-              <Route path="/optimizacion-rutas" element={<OptimizacionRutas />} />
-              <Route path="/viaje-compartido" element={<ViajeCompartido />} />
-              <Route path="/validacion-documentos" element={<ValidacionDocumentos />} />
-              <Route path="/soporte-tecnico" element={<SoporteTecnico />} />
-              <Route path="/reportes-automaticos" element={<ReportesAutomaticos />} />
-              <Route path="/chat-interno" element={<ChatInterno />} />
-              <Route path="/seguimiento-conversaciones" element={<SeguimientoConversaciones />} />
-              <Route path="/notificaciones-tickets" element={<NotificacionesTickets />} />
-            </Routes>
-          </>
-        } />
+        {/* ← AGREGAR ESTA RUTA DE PERFIL */}
+        <Route path="/perfil" element={<Perfil />} />
+        
+        {/* Otras rutas de módulos */}
+        <Route path="/solicitud-viaje" element={<SolicitudViaje />} />
+        <Route path="/optimizacion-rutas" element={<OptimizacionRutas />} />
+        <Route path="/viaje-compartido" element={<ViajeCompartido />} />
+        <Route path="/validacion-documentos" element={<ValidacionDocumentos />} />
+        <Route path="/soporte-tecnico" element={<SoporteTecnico />} />
+        <Route path="/reportes-automaticos" element={<ReportesAutomaticos />} />
+        <Route path="/chat-interno" element={<ChatInterno />} />
+        <Route path="/seguimiento-conversaciones" element={<SeguimientoConversaciones />} />
+        <Route path="/notificaciones-tickets" element={<NotificacionesTickets />} />
       </Routes>
     </Router>
   );

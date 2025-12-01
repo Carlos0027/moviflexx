@@ -1,9 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { User, LogOut, Settings, Bell, Menu, X } from "lucide-react";
 import "./Dashboard.css";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [userData, setUserData] = useState({ fullName: "Usuario", role: "pasajero" });
+
+  // Obtener datos del usuario desde localStorage
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      try {
+        const parsed = JSON.parse(storedUser);
+        setUserData(parsed);
+      } catch (error) {
+        console.error("Error parsing user data:", error);
+      }
+    } else {
+      // Si no hay usuario, redirigir al login
+      navigate('/login');
+    }
+  }, [navigate]);
+
+  const userName = userData.fullName || "Usuario";
+  const userRole = userData.role || "pasajero";
 
   const modules = [
     {
@@ -84,8 +107,117 @@ const Dashboard = () => {
     navigate(path);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate('/login');
+  };
+
+  const handleProfile = () => {
+    console.log("Navegando a perfil...");
+    setShowUserMenu(false);
+    navigate('/perfil');
+  };
+
+  const handleSettings = () => {
+    setShowUserMenu(false);
+    navigate('/configuracion');
+  };
+
+  const pendingCount = modules.filter(m => m.status === 'Por hacer').length;
+  const completedCount = modules.filter(m => m.status === 'Completado').length;
+
   return (
     <div className="dashboard">
+      {/* Navbar */}
+      <nav className="dashboard-navbar">
+        <div className="navbar-container">
+          <div className="navbar-brand">
+            <span className="brand-icon">🚗</span>
+            <span className="brand-name">MoviFlexx</span>
+          </div>
+
+          {/* Menu Mobile Toggle */}
+          <button 
+            className="mobile-menu-toggle"
+            onClick={() => setShowMobileMenu(!showMobileMenu)}
+            aria-label="Toggle menu"
+          >
+            {showMobileMenu ? <X size={24} /> : <Menu size={24} />}
+          </button>
+
+          {/* Navbar Menu */}
+          <div className={`navbar-menu ${showMobileMenu ? 'active' : ''}`}>
+            <div className="navbar-links">
+              <a href="/dashboard" className="nav-link active">
+                Dashboard
+              </a>
+              <a href="/mis-viajes" className="nav-link">
+                Mis Viajes
+              </a>
+              {userRole === 'conductor' && (
+                <a href="/mis-rutas" className="nav-link">
+                  Mis Rutas
+                </a>
+              )}
+              <a href="/historial" className="nav-link">
+                Historial
+              </a>
+            </div>
+
+            <div className="navbar-actions">
+              {/* Notificaciones */}
+              <button className="navbar-icon-btn" title="Notificaciones" aria-label="Notificaciones">
+                <Bell size={20} />
+                <span className="notification-badge">3</span>
+              </button>
+
+              {/* User Menu */}
+              <div className="user-menu-container">
+                <button 
+                  className="user-menu-btn"
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  aria-label="Menú de usuario"
+                  aria-expanded={showUserMenu}
+                >
+                  <div className="user-avatar">
+                    <User size={18} />
+                  </div>
+                  <span className="user-name">{userName}</span>
+                </button>
+
+                {/* Dropdown Menu */}
+                {showUserMenu && (
+                  <div className="user-dropdown">
+                    <div className="dropdown-header">
+                      <div className="dropdown-user-info">
+                        <p className="dropdown-user-name">{userName}</p>
+                        <p className="dropdown-user-role">
+                          {userRole === 'conductor' ? '🚗 Conductor' : '👤 Pasajero'}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="dropdown-divider"></div>
+                    <button className="dropdown-item" onClick={handleProfile}>
+                      <User size={16} />
+                      <span>Ver Perfil</span>
+                    </button>
+                    <button className="dropdown-item" onClick={handleSettings}>
+                      <Settings size={16} />
+                      <span>Configuración</span>
+                    </button>
+                    <div className="dropdown-divider"></div>
+                    <button className="dropdown-item logout" onClick={handleLogout}>
+                      <LogOut size={16} />
+                      <span>Cerrar Sesión</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+
       <header className="dashboard-header">
         <div className="header-content">
           <div className="header-text">
@@ -98,15 +230,11 @@ const Dashboard = () => {
               <span className="stat-label">Módulos</span>
             </div>
             <div className="stat">
-              <span className="stat-number">
-                {modules.filter(m => m.status === 'Por hacer').length}
-              </span>
+              <span className="stat-number">{pendingCount}</span>
               <span className="stat-label">Pendientes</span>
             </div>
             <div className="stat">
-              <span className="stat-number">
-                {modules.filter(m => m.status === 'Completado').length}
-              </span>
+              <span className="stat-number">{completedCount}</span>
               <span className="stat-label">Completados</span>
             </div>
           </div>
@@ -120,14 +248,22 @@ const Dashboard = () => {
               key={module.id}
               className="module-card"
               onClick={() => handleModuleClick(module.path)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleModuleClick(module.path);
+                }
+              }}
             >
-              <div className="module-icon">{module.icon}</div>
+              <div className="module-icon" aria-hidden="true">{module.icon}</div>
               <div className="module-content">
                 <h3 className="module-title">{module.title}</h3>
                 <p className="module-description">{module.description}</p>
                 <div className="module-meta">
                   <span className="module-id">{module.id}</span>
-                  <span className={`module-status ${module.status.toLowerCase().replace(' ', '-')}`}>
+                  <span className={`module-status ${module.status.toLowerCase().replace(/\s+/g, '-')}`}>
                     {module.status}
                   </span>
                 </div>
@@ -142,13 +278,25 @@ const Dashboard = () => {
           <p>🚀 MoviFlex - Plataforma de Gestión de Viajes Corporativos</p>
           <div className="footer-links">
             <span>Versión 1.0</span>
-            <span>•</span>
+            <span aria-hidden="true">•</span>
             <span>Desarrollo Activo</span>
-            <span>•</span>
+            <span aria-hidden="true">•</span>
             <span>{new Date().getFullYear()}</span>
           </div>
         </div>
       </footer>
+
+      {/* Overlay para cerrar menús */}
+      {(showUserMenu || showMobileMenu) && (
+        <div 
+          className="menu-overlay"
+          onClick={() => {
+            setShowUserMenu(false);
+            setShowMobileMenu(false);
+          }}
+          aria-hidden="true"
+        ></div>
+      )}
     </div>
   );
 };

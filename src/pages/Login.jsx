@@ -16,76 +16,83 @@ export default function Login() {
     setLoading(true);
     setError('');
 
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-
     setTimeout(() => {
-      // Primero verificar si hay usuario registrado
+      // Obtener usuario registrado
+      const storedUser = localStorage.getItem("user");
+
       if (!storedUser) {
-        setError("No hay usuarios registrados.");
+        setError("No hay usuarios registrados. Por favor regístrate primero.");
         setLoading(false);
         return;
       }
 
-      // Validar campos completos
       if (!email || !password) {
         setError('Por favor completa todos los campos');
         setLoading(false);
         return;
       }
 
-      // Validar email
-      if (email !== storedUser.email) {
-        setError("El correo no coincide con ningún usuario registrado.");
+      try {
+        const userData = JSON.parse(storedUser);
+
+        if (email !== userData.email) {
+          setError("El correo no coincide con ningún usuario registrado.");
+          setLoading(false);
+          return;
+        }
+
+        if (password !== userData.password) {
+          setError("La contraseña es incorrecta.");
+          setLoading(false);
+          return;
+        }
+
+        // Login exitoso
+        console.log("Login exitoso:", userData);
+
+        // El usuario ya está en localStorage con la clave "user"
+        // No necesitamos guardar en "loggedUser" porque todos los componentes usan "user"
+        
         setLoading(false);
-        return;
-      }
 
-      // Validar contraseña
-      if (password !== storedUser.password) {
-        setError("La contraseña es incorrecta.");
+        // Redirigir a la página de bienvenida
+        navigate('/bienvenido');
+
+      } catch (error) {
+        console.error("Error al procesar el login:", error);
+        setError("Error al iniciar sesión. Intenta de nuevo.");
         setLoading(false);
-        return;
       }
-
-      console.log("Login exitoso:", storedUser);
-      setLoading(false);
-
-      // Redirigir al dashboard después del login exitoso
-      navigate('/dashboard');
-
     }, 1200);
   };
 
   return (
     <div className="login-container">
       <div className="login-wrapper">
-        
-        {/* Left Side - Branding */}
         <div className="login-brand">
           <div className="brand-content">
             <div className="brand-logo">
               <span>MF</span>
             </div>
             <h1>MoviFlexx</h1>
-            <p>Tu plataforma de streaming favorita</p>
+            <p>Tu plataforma de viajes compartidos favorita</p>
             <div className="brand-features">
               <div className="feature-item">
                 <span className="checkmark">✓</span>
-                <p>Acceso ilimitado a contenido</p>
+                <p>Viajes seguros y verificados</p>
               </div>
               <div className="feature-item">
                 <span className="checkmark">✓</span>
-                <p>Múltiples perfiles de usuario</p>
+                <p>Ahorra dinero compartiendo</p>
               </div>
               <div className="feature-item">
                 <span className="checkmark">✓</span>
-                <p>Descargas sin conexión</p>
+                <p>Comunidad de confianza</p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Right Side - Form */}
         <div className="login-form-container">
           <div className="form-content">
             <h2>Bienvenido de Vuelta</h2>
@@ -94,8 +101,7 @@ export default function Login() {
             {error && <div className="error-message">{error}</div>}
 
             <form onSubmit={handleSubmit} className="login-form">
-              
-              {/* Email */}
+
               <div className="form-group">
                 <label htmlFor="email">Correo Electrónico</label>
                 <div className="input-wrapper">
@@ -111,7 +117,6 @@ export default function Login() {
                 </div>
               </div>
 
-              {/* Password */}
               <div className="form-group">
                 <label htmlFor="password">Contraseña</label>
                 <div className="input-wrapper">
@@ -134,7 +139,6 @@ export default function Login() {
                 </div>
               </div>
 
-              {/* Options */}
               <div className="form-options">
                 <label className="remember-me">
                   <input type="checkbox" />
@@ -143,7 +147,6 @@ export default function Login() {
                 <a href="#" className="forgot-password">¿Olvidaste tu contraseña?</a>
               </div>
 
-              {/* Button */}
               <button
                 type="submit"
                 className={`submit-btn ${loading ? 'loading' : ''}`}
@@ -163,18 +166,15 @@ export default function Login() {
               </button>
             </form>
 
-            {/* Divider */}
             <div className="divider">
               <span>O continúa con</span>
             </div>
 
-            {/* Social */}
             <div className="social-login">
               <button className="social-btn google">Google</button>
               <button className="social-btn github">GitHub</button>
             </div>
 
-            {/* Link */}
             <p className="signup-link">
               ¿No tienes cuenta? <a href="/register">Regístrate aquí</a>
             </p>
