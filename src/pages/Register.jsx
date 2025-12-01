@@ -11,19 +11,20 @@ export default function Register() {
   const [showTerms, setShowTerms] = useState(false);
 
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    password: '',
+    nombres: '',
+    apellidos: '',
+    nombreUsuario: '',
+    correo: '',
+    telefono: '',
+    contrasenaHash: '',
     confirmPassword: '',
+    rolId: 2,
     acceptTerms: false,
     // Datos del vehículo (solo para conductores)
-    carBrand: '',
-    carModel: '',
-    carYear: '',
-    carColor: '',
-    licensePlate: '',
-    carCapacity: '4'
+    placa: '',
+    modelo: '',
+    anio: '',
+    marca: ''
   });
 
   const [loading, setLoading] = useState(false);
@@ -43,22 +44,21 @@ export default function Register() {
       setError('Por favor selecciona un rol');
       return false;
     }
-    if (!formData.fullName || !formData.email || !formData.password || !formData.confirmPassword) {
+    if (!formData.nombres || !formData.apellidos || !formData.nombreUsuario || !formData.correo || !formData.contrasenaHash || !formData.confirmPassword) {
       setError('Por favor completa todos los campos obligatorios');
       return false;
     }
-    if (formData.password !== formData.confirmPassword) {
+    if (formData.contrasenaHash !== formData.confirmPassword) {
       setError('Las contraseñas no coinciden');
       return false;
     }
-    if (formData.password.length < 8) {
+    if (formData.contrasenaHash.length < 8) {
       setError('La contraseña debe tener al menos 8 caracteres');
       return false;
     }
     
-    // Validación adicional para conductores
     if (selectedRole === 'conductor') {
-      if (!formData.carBrand || !formData.carModel || !formData.carYear || !formData.licensePlate) {
+      if (!formData.placa || !formData.modelo || !formData.anio || !formData.marca) {
         setError('Por favor completa todos los datos del vehículo');
         return false;
       }
@@ -79,38 +79,47 @@ export default function Register() {
 
     setLoading(true);
 
-    // Simular proceso de registro
+    // Simular proceso de registro (sin base de datos)
     setTimeout(() => {
       try {
-        // Crear objeto de usuario
+        // Crear objeto de usuario según el modelo de Prisma
         const userData = {
-          fullName: formData.fullName,
-          email: formData.email,
-          phone: formData.phone,
-          password: formData.password,
-          role: selectedRole,
-          createdAt: new Date().toISOString(),
-          profileImage: null // Se agregará funcionalidad de foto después
+          idUsuariosSistema: Date.now(), // ID temporal
+          nombreUsuario: formData.nombreUsuario,
+          contrasenaHash: formData.contrasenaHash,
+          correo: formData.correo,
+          nombres: formData.nombres,
+          apellidos: formData.apellidos,
+          rolId: selectedRole === 'conductor' ? 3 : 2,
+          estado: "Activo",
+          fechaRegistro: new Date().toISOString(),
+          telefono: formData.telefono
         };
 
-        // Si es conductor, agregar datos del vehículo
+        // Si es conductor, crear también el vehículo
         if (selectedRole === 'conductor') {
-          userData.vehicle = {
-            brand: formData.carBrand,
-            model: formData.carModel,
-            year: formData.carYear,
-            color: formData.carColor,
-            licensePlate: formData.licensePlate.toUpperCase(),
-            capacity: formData.carCapacity
+          const vehicleData = {
+            idVehiculo: Date.now() + 1,
+            placa: formData.placa,
+            modelo: formData.modelo,
+            anio: parseInt(formData.anio),
+            conductorId: userData.idUsuariosSistema,
+            marca: formData.marca
           };
+
+          // Guardar vehículo en localStorage
+          const existingVehicles = JSON.parse(localStorage.getItem("vehicles")) || [];
+          localStorage.setItem("vehicles", JSON.stringify([...existingVehicles, vehicleData]));
         }
 
-        // IMPORTANTE: Guardar en localStorage
+        // Guardar usuario en localStorage
+        const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
+        localStorage.setItem("users", JSON.stringify([...existingUsers, userData]));
+        
+        // También guardar en "user" para el login actual
         localStorage.setItem("user", JSON.stringify(userData));
         
-        // Verificar que se guardó correctamente
-        const savedUser = localStorage.getItem("user");
-        console.log("✅ Usuario guardado en localStorage:", JSON.parse(savedUser));
+        console.log("✅ Usuario guardado en localStorage:", userData);
         
         setSuccess(true);
         setLoading(false);
@@ -137,7 +146,7 @@ export default function Register() {
           <p>Tu cuenta ha sido creada correctamente</p>
           {selectedRole === 'conductor' && (
             <p className="vehicle-info">
-              Vehículo registrado: {formData.carBrand} {formData.carModel}
+              Vehículo registrado: {formData.marca} {formData.modelo}
             </p>
           )}
           <p className="redirect-text">Redirigiendo al login...</p>
@@ -225,14 +234,44 @@ export default function Register() {
                   <div className="section-title">📋 Datos Personales</div>
                   
                   <div className="form-group">
-                    <label>Nombre Completo *</label>
+                    <label>Nombres *</label>
                     <div className="input-wrapper">
                       <User size={20} className="input-icon" />
                       <input 
                         type="text" 
-                        name="fullName" 
-                        placeholder="Juan Pérez" 
-                        value={formData.fullName} 
+                        name="nombres" 
+                        placeholder="Juan" 
+                        value={formData.nombres} 
+                        onChange={handleChange} 
+                        required 
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Apellidos *</label>
+                    <div className="input-wrapper">
+                      <User size={20} className="input-icon" />
+                      <input 
+                        type="text" 
+                        name="apellidos" 
+                        placeholder="Pérez" 
+                        value={formData.apellidos} 
+                        onChange={handleChange} 
+                        required 
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Nombre de Usuario *</label>
+                    <div className="input-wrapper">
+                      <User size={20} className="input-icon" />
+                      <input 
+                        type="text" 
+                        name="nombreUsuario" 
+                        placeholder="juanperez" 
+                        value={formData.nombreUsuario} 
                         onChange={handleChange} 
                         required 
                       />
@@ -245,9 +284,9 @@ export default function Register() {
                       <Mail size={20} className="input-icon" />
                       <input 
                         type="email" 
-                        name="email" 
+                        name="correo" 
                         placeholder="tu@email.com" 
-                        value={formData.email} 
+                        value={formData.correo} 
                         onChange={handleChange} 
                         required 
                       />
@@ -260,9 +299,9 @@ export default function Register() {
                       <Phone size={20} className="input-icon" />
                       <input 
                         type="tel" 
-                        name="phone" 
+                        name="telefono" 
                         placeholder="+57 300 000 0000" 
-                        value={formData.phone} 
+                        value={formData.telefono} 
                         onChange={handleChange} 
                         required 
                       />
@@ -275,9 +314,9 @@ export default function Register() {
                       <Lock size={20} className="input-icon" />
                       <input
                         type={showPassword ? 'text' : 'password'}
-                        name="password"
+                        name="contrasenaHash"
                         placeholder="Mínimo 8 caracteres"
-                        value={formData.password}
+                        value={formData.contrasenaHash}
                         onChange={handleChange}
                         required
                       />
@@ -325,9 +364,9 @@ export default function Register() {
                             <Car size={20} className="input-icon" />
                             <input 
                               type="text" 
-                              name="carBrand" 
+                              name="marca" 
                               placeholder="Ej: Toyota, Mazda" 
-                              value={formData.carBrand} 
+                              value={formData.marca} 
                               onChange={handleChange} 
                               required 
                             />
@@ -339,9 +378,9 @@ export default function Register() {
                           <div className="input-wrapper">
                             <input 
                               type="text" 
-                              name="carModel" 
+                              name="modelo" 
                               placeholder="Ej: Corolla, 3" 
-                              value={formData.carModel} 
+                              value={formData.modelo} 
                               onChange={handleChange} 
                               className="no-icon-input"
                               required 
@@ -357,64 +396,30 @@ export default function Register() {
                             <Calendar size={20} className="input-icon" />
                             <input 
                               type="number" 
-                              name="carYear" 
+                              name="anio" 
                               placeholder="2020" 
                               min="1990"
                               max="2025"
-                              value={formData.carYear} 
+                              value={formData.anio} 
                               onChange={handleChange} 
                               required 
                             />
                           </div>
                         </div>
 
-                        <div className="form-group">
-                          <label>Color</label>
-                          <div className="input-wrapper">
-                            <input 
-                              type="text" 
-                              name="carColor" 
-                              placeholder="Blanco" 
-                              value={formData.carColor} 
-                              onChange={handleChange} 
-                              className="no-icon-input"
-                            />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="form-row">
                         <div className="form-group">
                           <label>Placa *</label>
                           <div className="input-wrapper">
                             <Hash size={20} className="input-icon" />
                             <input 
                               type="text" 
-                              name="licensePlate" 
+                              name="placa" 
                               placeholder="ABC123" 
-                              value={formData.licensePlate} 
+                              value={formData.placa} 
                               onChange={handleChange} 
                               className="uppercase-input"
                               required 
                             />
-                          </div>
-                        </div>
-
-                        <div className="form-group">
-                          <label>Capacidad</label>
-                          <div className="input-wrapper">
-                            <select 
-                              name="carCapacity" 
-                              value={formData.carCapacity} 
-                              onChange={handleChange}
-                              className="no-icon-input"
-                            >
-                              <option value="2">2 pasajeros</option>
-                              <option value="3">3 pasajeros</option>
-                              <option value="4">4 pasajeros</option>
-                              <option value="5">5 pasajeros</option>
-                              <option value="6">6 pasajeros</option>
-                            </select>
                           </div>
                         </div>
                       </div>

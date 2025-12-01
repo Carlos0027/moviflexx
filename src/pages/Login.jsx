@@ -35,13 +35,15 @@ export default function Login() {
       try {
         const userData = JSON.parse(storedUser);
 
-        if (email !== userData.email) {
+        // CAMBIO AQUÍ: usar 'correo' en lugar de 'email'
+        if (email !== userData.correo) {
           setError("El correo no coincide con ningún usuario registrado.");
           setLoading(false);
           return;
         }
 
-        if (password !== userData.password) {
+        // CAMBIO AQUÍ: usar 'contrasenaHash' en lugar de 'password'
+        if (password !== userData.contrasenaHash) {
           setError("La contraseña es incorrecta.");
           setLoading(false);
           return;
@@ -49,9 +51,6 @@ export default function Login() {
 
         // Login exitoso
         console.log("Login exitoso:", userData);
-
-        // El usuario ya está en localStorage con la clave "user"
-        // No necesitamos guardar en "loggedUser" porque todos los componentes usan "user"
         
         setLoading(false);
 
