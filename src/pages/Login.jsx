@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
 import "./Login.css";
+import { useNavigate } from 'react-router-dom';
+import "../pages/Bienvenido"
 
 export default function Login() {
   const navigate = useNavigate();
@@ -25,21 +27,49 @@ export default function Login() {
       }
 
       // Validar email
-      if (email !== storedUser.email) {
-        setError("El correo no coincide con ningún usuario registrado.");
-        setLoading(false);
-        // Redirigir o guardar sesión
-      } else {
-        setError('Por favor completa todos los campos');
-        setLoading(false);
-        return;
-      }
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setError('');
+
+        if (!email || !password) {
+          setError("Por favor completa todos los campos");
+          setLoading(false);
+          return;
+        }
+
+        const storedUser = JSON.parse(localStorage.getItem("user"));
+
+        setTimeout(() => {
+          if (!storedUser) {
+            setError("No hay usuarios registrados.");
+            setLoading(false);
+            return;
+          }
+
+          if (email !== storedUser.email) {
+            setError("El correo no coincide con ningún usuario registrado.");
+            setLoading(false);
+            return;
+          }
+
+          if (password !== storedUser.password) {
+            setError("La contraseña es incorrecta.");
+            setLoading(false);
+            return;
+          }
+
+          console.log("Login exitoso:", storedUser);
+          setLoading(false);
+          navigate('/bienvenido-admin');
+        }, 1200);
+      };
 
       console.log("Login exitoso:", storedUser);
       setLoading(false);
 
       // Redirigir a la página de bienvenida
-      navigate('/bienvenido');
+      navigate('/bienvenido-admin');
 
     }, 1200);
   };

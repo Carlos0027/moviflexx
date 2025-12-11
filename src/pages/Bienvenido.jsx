@@ -2,6 +2,7 @@ import React from 'react';
 import { Users, Car, Zap, MapPin, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import "./Bienvenido.css";
+import "./Admin/Admin"
 
 export default function Bienvenido() {
   return (

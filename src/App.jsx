@@ -15,8 +15,7 @@ function App() {
         <Route path="/" element={<HomeBase />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/bienvenido-pasajero" element={<Bienvenido />} />
-        <Route path="/bienvenido-conductor" element={<Bienvenido />} />
+        <Route path="/bienvenido-admin" element={<Bienvenido />} />
       </Routes>
   </Router>
   );
