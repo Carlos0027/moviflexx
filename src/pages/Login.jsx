@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import "./Login.css";
-import { useNavigate } from 'react-router-dom';
+import "./Login.css"; 
 import "../pages/Bienvenido"
 
 export default function Login() {

@@ -1,3 +1,4 @@
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import HomeBase from "./pages/HomeBase";
@@ -25,21 +26,22 @@ function App() {
     <>
       <Router>
         <Routes>
+          {/* Rutas de Admin */}
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/conductores" element={<AdminConductores />} />
           <Route path="/admin/usuarios" element={<AdminUsuarios />} />
           <Route path="/admin/vehiculos" element={<AdminVehiculos />} />
-          <Route path="/bienvenido-admin" element={<Bienvenido />} />
-        </Routes>
-      </Router>
-      <Router>
-        <Routes>
+          <Route path="/*" element={
             <>
-            <Navbar></Navbar>
+              <Navbar />
               <Routes>
+                {/* Rutas públicas */}
                 <Route path="/" element={<HomeBase />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/bienvenido-admin" element={<Bienvenido />} />
+                
+                {/* Rutas protegidas después del login */}
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/solicitud-viaje" element={<SolicitudViaje />} />
                 <Route path="/optimizacion-rutas" element={<OptimizacionRutas />} />
@@ -52,6 +54,7 @@ function App() {
                 <Route path="/notificaciones-tickets" element={<NotificacionesTickets />} />
               </Routes>
             </>
+          } />
         </Routes>
       </Router>
     </>
