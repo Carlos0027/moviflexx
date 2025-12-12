@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import "./Login.css";
 import { useNavigate } from 'react-router-dom';
 import "../pages/Bienvenido"
@@ -17,6 +18,12 @@ export default function Login() {
     setLoading(true);
     setError('');
 
+    if (!email || !password) {
+      setError("Por favor completa todos los campos");
+      setLoading(false);
+      return;
+    }
+
     const storedUser = JSON.parse(localStorage.getItem("user"));
 
     setTimeout(() => {
@@ -26,54 +33,27 @@ export default function Login() {
         return;
       }
 
-      // Validar email
-      const handleSubmit = (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setError('');
+      if (email !== storedUser.email) {
+        setError("El correo no coincide con ningún usuario registrado.");
+        setLoading(false);
+        return;
+      }
 
-        if (!email || !password) {
-          setError("Por favor completa todos los campos");
-          setLoading(false);
-          return;
-        }
-
-        const storedUser = JSON.parse(localStorage.getItem("user"));
-
-        setTimeout(() => {
-          if (!storedUser) {
-            setError("No hay usuarios registrados.");
-            setLoading(false);
-            return;
-          }
-
-          if (email !== storedUser.email) {
-            setError("El correo no coincide con ningún usuario registrado.");
-            setLoading(false);
-            return;
-          }
-
-          if (password !== storedUser.password) {
-            setError("La contraseña es incorrecta.");
-            setLoading(false);
-            return;
-          }
-
-          console.log("Login exitoso:", storedUser);
-          setLoading(false);
-          navigate('/bienvenido-admin');
-        }, 1200);
-      };
+      if (password !== storedUser.password) {
+        setError("La contraseña es incorrecta.");
+        setLoading(false);
+        return;
+      }
 
       console.log("Login exitoso:", storedUser);
       setLoading(false);
 
       // Redirigir a la página de bienvenida
       navigate('/bienvenido-admin');
-
     }, 1200);
   };
 
+  
   return (
     <div className="login-container">
       <div className="login-wrapper">
@@ -124,6 +104,7 @@ export default function Login() {
                     placeholder="tu@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    required
                   />
                 </div>
               </div>
@@ -139,6 +120,7 @@ export default function Login() {
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    required
                   />
                   <button
                     type="button"

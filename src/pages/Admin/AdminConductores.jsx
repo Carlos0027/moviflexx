@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Map from '../Imagenes/Map.png';
-import "./AdminConductores.css"; // TÚ creas este archivo
+import "./AdminConductores.css";
 
 function AdminConductores(){
-
     const [conductores, setConductores] = useState([]);
     
     useEffect(()=> {
@@ -17,8 +16,8 @@ function AdminConductores(){
             headers: {
                 "Content-Type":"application/json"
             }
-        }).then(response=> response.json())
-        .then(data=> setConductores(data));
+        }).then(response => response.json())
+        .then(data => setConductores(data));
     }
 
     async function eliminarConductor(id) {
@@ -31,6 +30,15 @@ function AdminConductores(){
         traerConductores();
     }
 
+    // Función para formatear la fecha
+    const formatearFecha = (fecha) => {
+        return new Date(fecha).toLocaleDateString('es-ES', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    };
+
     return(
         <div className="admin-conductores-container">
             {/* Navbar */}
@@ -42,12 +50,6 @@ function AdminConductores(){
                         MoviFlexx
                     </Link>
                     <div className="nav-auth">
-                        <Link to="/rutas" className="nav-btn-register">
-                            <div className="nav-icon">
-                                <img src={Map} alt="Mapa" />
-                            </div>
-                            Ver Rutas
-                        </Link>
                         <Link to="/" className="nav-link-login">
                             Cerrar Sesión
                         </Link>
@@ -65,23 +67,33 @@ function AdminConductores(){
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Nombre</th>
+                                <th>Nombres</th>
+                                <th>Apellidos</th>
+                                <th>Licencia</th>
                                 <th>Teléfono</th>
-                                <th>Archivos</th>
+                                <th>Estado</th>
+                                <th>Fecha Contratación</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {conductores.map((conductor)=>(
-                                <tr key={conductor.id} className="table-row">
-                                    <td className="table-cell">{conductor.id}</td>
-                                    <td className="table-cell">{conductor.nombre}</td>
+                            {conductores.map((conductor) => (
+                                <tr key={conductor.idConductores} className="table-row">
+                                    <td className="table-cell">{conductor.idConductores}</td>
+                                    <td className="table-cell">{conductor.nombres}</td>
+                                    <td className="table-cell">{conductor.apellidos}</td>
+                                    <td className="table-cell">{conductor.licencia}</td>
                                     <td className="table-cell">{conductor.telefono}</td>
-                                    <td className="table-cell">{conductor.archivos}</td>
+                                    <td className="table-cell">
+                                        <span className={`estado-badge ${conductor.estado.toLowerCase()}`}>
+                                            {conductor.estado}
+                                        </span>
+                                    </td>
+                                    <td className="table-cell">{formatearFecha(conductor.fechaContratacion)}</td>
                                     <td className="table-cell actions">
                                         <button 
                                             className="delete-btn"
-                                            onClick={() => eliminarConductor(conductor.id)}
+                                            onClick={() => eliminarConductor(conductor.idConductores)}
                                         >
                                             Eliminar
                                         </button>
