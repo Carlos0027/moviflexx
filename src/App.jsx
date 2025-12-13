@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Bienvenido from "./pages/Bienvenido";
 import Dashboard from "./pages/Dashboard";
+import Perfil from "./pages/Perfil"; // ← IMPORTAR EL COMPONENTE DE PERFIL
 import Admin from "./pages/Admin/Admin";
 import AdminConductores from "./pages/Admin/AdminConductores";
 import AdminUsuarios from "./pages/Admin/AdminUsuarios";
@@ -23,41 +24,45 @@ import "./App.css";
 
 function App() {
   return (
-    <>
-      <Router>
-        <Routes>
-          {/* Rutas de Admin */}
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/admin/conductores" element={<AdminConductores />} />
-          <Route path="/admin/usuarios" element={<AdminUsuarios />} />
-          <Route path="/admin/vehiculos" element={<AdminVehiculos />} />
-          <Route path="/*" element={
-            <>
-              <Navbar />
-              <Routes>
-                {/* Rutas públicas */}
-                <Route path="/" element={<HomeBase />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/bienvenido-admin" element={<Bienvenido />} />
-                
-                {/* Rutas protegidas después del login */}
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/solicitud-viaje" element={<SolicitudViaje />} />
-                <Route path="/optimizacion-rutas" element={<OptimizacionRutas />} />
-                <Route path="/viaje-compartido" element={<ViajeCompartido />} />
-                <Route path="/validacion-documentos" element={<ValidacionDocumentos />} />
-                <Route path="/soporte-tecnico" element={<SoporteTecnico />} />
-                <Route path="/reportes-automaticos" element={<ReportesAutomaticos />} />
-                <Route path="/chat-interno" element={<ChatInterno />} />
-                <Route path="/seguimiento-conversaciones" element={<SeguimientoConversaciones />} />
-                <Route path="/notificaciones-tickets" element={<NotificacionesTickets />} />
-              </Routes>
-            </>
-          } />
-        </Routes>
-      </Router>
-    </>
+    <Router>
+      <Routes>
+        {/* Rutas de Admin */}
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/admin/conductores" element={<AdminConductores />} />
+        <Route path="/admin/usuarios" element={<AdminUsuarios />} />
+        <Route path="/admin/vehiculos" element={<AdminVehiculos />} />
+        
+        {/* Rutas principales con Navbar */}
+        <Route path="/*" element={
+          <>
+            <Navbar />
+            <Routes>
+              {/* Rutas públicas */}
+              <Route path="/" element={<HomeBase />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/bienvenido" element={<Bienvenido />} />
+              <Route path="/bienvenido-pasajero" element={<Bienvenido />} />
+              <Route path="/bienvenido-conductor" element={<Bienvenido />} />
+              
+              {/* Rutas protegidas después del login */}
+              <Route path="/dashboard" element={<Dashboard />} />
+              
+              {/* Rutas de módulos específicos */}
+              <Route path="/solicitud-viaje" element={<SolicitudViaje />} />
+              <Route path="/optimizacion-rutas" element={<OptimizacionRutas />} />
+              <Route path="/viaje-compartido" element={<ViajeCompartido />} />
+              <Route path="/validacion-documentos" element={<ValidacionDocumentos />} />
+              <Route path="/soporte-tecnico" element={<SoporteTecnico />} />
+              <Route path="/reportes-automaticos" element={<ReportesAutomaticos />} />
+              <Route path="/chat-interno" element={<ChatInterno />} />
+              <Route path="/seguimiento-conversaciones" element={<SeguimientoConversaciones />} />
+              <Route path="/notificaciones-tickets" element={<NotificacionesTickets />} />
+            </Routes>
+          </>
+        } />
+      </Routes>
+    </Router>
   );
 }
 

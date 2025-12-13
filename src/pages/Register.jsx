@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Eye, EyeOff, Mail, Lock, User, Phone, ArrowRight, CheckCircle } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, Phone, ArrowRight, CheckCircle, Car, Hash, Calendar } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import "./Register.css";
 
@@ -11,19 +11,26 @@ export default function Register() {
   const [showTerms, setShowTerms] = useState(false);
 
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    password: '',
+    nombres: '',
+    apellidos: '',
+    nombreUsuario: '',
+    correo: '',
+    telefono: '',
+    contrasenaHash: '',
     confirmPassword: '',
-    acceptTerms: false
+    rolId: 2,
+    acceptTerms: false,
+    // Datos del vehículo (solo para conductores)
+    placa: '',
+    modelo: '',
+    anio: '',
+    marca: ''
   });
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
-  // Manejador de inputs
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
@@ -32,24 +39,31 @@ export default function Register() {
     }));
   };
 
-  // Validación del formulario
   const validateForm = () => {
     if (!selectedRole) {
       setError('Por favor selecciona un rol');
       return false;
     }
-    if (!formData.fullName || !formData.email || !formData.password || !formData.confirmPassword) {
-      setError('Por favor completa todos los campos');
+    if (!formData.nombres || !formData.apellidos || !formData.nombreUsuario || !formData.correo || !formData.contrasenaHash || !formData.confirmPassword) {
+      setError('Por favor completa todos los campos obligatorios');
       return false;
     }
-    if (formData.password !== formData.confirmPassword) {
+    if (formData.contrasenaHash !== formData.confirmPassword) {
       setError('Las contraseñas no coinciden');
       return false;
     }
-    if (formData.password.length < 8) {
+    if (formData.contrasenaHash.length < 8) {
       setError('La contraseña debe tener al menos 8 caracteres');
       return false;
     }
+    
+    if (selectedRole === 'conductor') {
+      if (!formData.placa || !formData.modelo || !formData.anio || !formData.marca) {
+        setError('Por favor completa todos los datos del vehículo');
+        return false;
+      }
+    }
+    
     if (!formData.acceptTerms) {
       setError('Debes aceptar los términos y condiciones');
       return false;
@@ -57,7 +71,7 @@ export default function Register() {
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
@@ -65,21 +79,44 @@ export default function Register() {
 
     setLoading(true);
 
-    setTimeout(() => {
-     
+    try {
+      // Preparar datos según tu esquema de backend
       const userData = {
-        fullName: formData.fullName,
-        email: formData.email,
-        phone: formData.phone,
-        password: formData.password, 
-        role: selectedRole,
-        createdAt: new Date().toISOString(),
-        token: "fake-token-" + Math.random().toString(36).substr(2, 10)
+        nombreUsuario: formData.nombreUsuario,
+        contrasenaHash: formData.contrasenaHash,
+        correo: formData.correo,
+        nombres: formData.nombres,
+        apellidos: formData.apellidos,
+        rolId: selectedRole === 'conductor' ? 3 : 2,
+        telefono: formData.telefono
       };
 
-      localStorage.setItem("user", JSON.stringify(userData));
-      console.log("Usuario guardado en LocalStorage:", userData);
+      // Agregar datos del vehículo si es conductor
+      if (selectedRole === 'conductor') {
+        userData.vehiculo = {
+          placa: formData.placa,
+          modelo: formData.modelo,
+          anio: parseInt(formData.anio),
+          marca: formData.marca
+        };
+      }
 
+      const respuesta = await fetch("http://localhost:4000/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData)
+      });
+
+      const data = await respuesta.json();
+
+      if (!respuesta.ok) {
+        setError(data.message || 'Error al crear la cuenta');
+        setLoading(false);
+        return;
+      }
+
+      console.log("✅ Usuario registrado:", data);
+      
       setSuccess(true);
       setLoading(false);
 
@@ -88,7 +125,11 @@ export default function Register() {
         navigate('/login');
       }, 2000);
 
-    }, 1500);
+    } catch (error) {
+      console.error("❌ Error al registrar:", error);
+      setError('Error de conexión. Verifica que el servidor esté activo.');
+      setLoading(false);
+    }
   };
 
   if (success) {
@@ -98,6 +139,11 @@ export default function Register() {
           <CheckCircle size={80} className="success-icon" />
           <h2>¡Registro Exitoso!</h2>
           <p>Tu cuenta ha sido creada correctamente</p>
+          {selectedRole === 'conductor' && (
+            <p className="vehicle-info">
+              Vehículo registrado: {formData.marca} {formData.modelo}
+            </p>
+          )}
           <p className="redirect-text">Redirigiendo al login...</p>
         </div>
       </div>
@@ -153,7 +199,6 @@ export default function Register() {
               <div className="role-selection">
                 <p className="role-title">¿Cuál es tu rol?</p>
                 <div className="role-cards">
-
                   <button type="button" className="role-card" onClick={() => setSelectedRole('pasajero')}>
                     <div className="role-icon">👤</div>
                     <h3>Pasajero</h3>
@@ -173,60 +218,115 @@ export default function Register() {
                   <span className="role-badge">
                     {selectedRole === 'pasajero' ? '👤 Pasajero' : '🚗 Conductor'}
                   </span>
-                  <button className="change-role" onClick={() => setSelectedRole(null)}>Cambiar rol</button>
+                  <button className="change-role" onClick={() => setSelectedRole(null)}>
+                    Cambiar rol
+                  </button>
                 </div>
 
                 <form onSubmit={handleSubmit} className="register-form">
                   
-                  {/* Nombre */}
+                  {/* Datos Personales */}
+                  <div className="section-title">📋 Datos Personales</div>
+                  
                   <div className="form-group">
-                    <label>Nombre Completo</label>
+                    <label>Nombres *</label>
                     <div className="input-wrapper">
                       <User size={20} className="input-icon" />
-                      <input type="text" name="fullName" placeholder="Juan Pérez" value={formData.fullName} onChange={handleChange} required />
+                      <input 
+                        type="text" 
+                        name="nombres" 
+                        placeholder="Juan" 
+                        value={formData.nombres} 
+                        onChange={handleChange} 
+                        required 
+                      />
                     </div>
                   </div>
 
-                  {/* Email */}
                   <div className="form-group">
-                    <label>Correo Electrónico</label>
+                    <label>Apellidos *</label>
+                    <div className="input-wrapper">
+                      <User size={20} className="input-icon" />
+                      <input 
+                        type="text" 
+                        name="apellidos" 
+                        placeholder="Pérez" 
+                        value={formData.apellidos} 
+                        onChange={handleChange} 
+                        required 
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Nombre de Usuario *</label>
+                    <div className="input-wrapper">
+                      <User size={20} className="input-icon" />
+                      <input 
+                        type="text" 
+                        name="nombreUsuario" 
+                        placeholder="juanperez" 
+                        value={formData.nombreUsuario} 
+                        onChange={handleChange} 
+                        required 
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Correo Electrónico *</label>
                     <div className="input-wrapper">
                       <Mail size={20} className="input-icon" />
-                      <input type="email" name="email" placeholder="tu@email.com" value={formData.email} onChange={handleChange} required />
+                      <input 
+                        type="email" 
+                        name="correo" 
+                        placeholder="tu@email.com" 
+                        value={formData.correo} 
+                        onChange={handleChange} 
+                        required 
+                      />
                     </div>
                   </div>
 
-                  {/* Teléfono */}
                   <div className="form-group">
-                    <label>Teléfono</label>
+                    <label>Teléfono *</label>
                     <div className="input-wrapper">
                       <Phone size={20} className="input-icon" />
-                      <input type="tel" name="phone" placeholder="+57 300 000 0000" value={formData.phone} onChange={handleChange} required />
+                      <input 
+                        type="tel" 
+                        name="telefono" 
+                        placeholder="+57 300 000 0000" 
+                        value={formData.telefono} 
+                        onChange={handleChange} 
+                        required 
+                      />
                     </div>
                   </div>
 
-                  {/* Contraseña */}
                   <div className="form-group">
-                    <label>Contraseña</label>
+                    <label>Contraseña *</label>
                     <div className="input-wrapper">
                       <Lock size={20} className="input-icon" />
                       <input
                         type={showPassword ? 'text' : 'password'}
-                        name="password"
+                        name="contrasenaHash"
                         placeholder="Mínimo 8 caracteres"
-                        value={formData.password}
+                        value={formData.contrasenaHash}
                         onChange={handleChange}
                         required
                       />
-                      <button type="button" className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
+                      <button 
+                        type="button" 
+                        className="toggle-password" 
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
                         {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                       </button>
                     </div>
                   </div>
 
-                  {/* Confirmar contraseña */}
                   <div className="form-group">
-                    <label>Confirmar Contraseña</label>
+                    <label>Confirmar Contraseña *</label>
                     <div className="input-wrapper">
                       <Lock size={20} className="input-icon" />
                       <input
@@ -237,22 +337,118 @@ export default function Register() {
                         onChange={handleChange}
                         required
                       />
-                      <button type="button" className="toggle-password" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                      <button 
+                        type="button" 
+                        className="toggle-password" 
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      >
                         {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                       </button>
                     </div>
                   </div>
 
+                  {/* Datos del Vehículo - Solo para Conductores */}
+                  {selectedRole === 'conductor' && (
+                    <>
+                      <div className="section-title">🚗 Datos del Vehículo</div>
+                      
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Marca *</label>
+                          <div className="input-wrapper">
+                            <Car size={20} className="input-icon" />
+                            <input 
+                              type="text" 
+                              name="marca" 
+                              placeholder="Ej: Toyota, Mazda" 
+                              value={formData.marca} 
+                              onChange={handleChange} 
+                              required 
+                            />
+                          </div>
+                        </div>
+
+                        <div className="form-group">
+                          <label>Modelo *</label>
+                          <div className="input-wrapper">
+                            <input 
+                              type="text" 
+                              name="modelo" 
+                              placeholder="Ej: Corolla, 3" 
+                              value={formData.modelo} 
+                              onChange={handleChange} 
+                              className="no-icon-input"
+                              required 
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="form-row">
+                        <div className="form-group">
+                          <label>Año *</label>
+                          <div className="input-wrapper">
+                            <Calendar size={20} className="input-icon" />
+                            <input 
+                              type="number" 
+                              name="anio" 
+                              placeholder="2020" 
+                              min="1990"
+                              max="2025"
+                              value={formData.anio} 
+                              onChange={handleChange} 
+                              required 
+                            />
+                          </div>
+                        </div>
+
+                        <div className="form-group">
+                          <label>Placa *</label>
+                          <div className="input-wrapper">
+                            <Hash size={20} className="input-icon" />
+                            <input 
+                              type="text" 
+                              name="placa" 
+                              placeholder="ABC123" 
+                              value={formData.placa} 
+                              onChange={handleChange} 
+                              className="uppercase-input"
+                              required 
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
+
                   {/* Aceptar Términos */}
                   <div className="terms-section">
                     <label className="terms-checkbox">
-                      <input type="checkbox" name="acceptTerms" checked={formData.acceptTerms} onChange={handleChange} />
-                      <span>Acepto los <button type="button" className="terms-link" onClick={() => setShowTerms(true)}>términos y condiciones</button></span>
+                      <input 
+                        type="checkbox" 
+                        name="acceptTerms" 
+                        checked={formData.acceptTerms} 
+                        onChange={handleChange} 
+                      />
+                      <span>
+                        Acepto los{' '}
+                        <button 
+                          type="button" 
+                          className="terms-link" 
+                          onClick={() => setShowTerms(true)}
+                        >
+                          términos y condiciones
+                        </button>
+                      </span>
                     </label>
                   </div>
 
                   {/* Botón */}
-                  <button type="submit" className={`submit-btn ${loading ? 'loading' : ''}`} disabled={loading}>
+                  <button 
+                    type="submit" 
+                    className={`submit-btn ${loading ? 'loading' : ''}`} 
+                    disabled={loading}
+                  >
                     {loading ? (
                       <>
                         <span className="spinner"></span>
@@ -281,8 +477,10 @@ export default function Register() {
         <div className="modal-overlay" onClick={() => setShowTerms(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h2>Términos y Condiciones</h2>
-            <p>Contenido de los términos...</p>
-            <button className="close-modal" onClick={() => setShowTerms(false)}>Cerrar</button>
+            <p>Contenido de los términos y condiciones de MoviFlexx...</p>
+            <button className="close-modal" onClick={() => setShowTerms(false)}>
+              Cerrar
+            </button>
           </div>
         </div>
       )}
