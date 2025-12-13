@@ -71,7 +71,7 @@ export default function Register() {
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
@@ -79,62 +79,57 @@ export default function Register() {
 
     setLoading(true);
 
-    // Simular proceso de registro (sin base de datos)
-    setTimeout(() => {
-      try {
-        // Crear objeto de usuario según el modelo de Prisma
-        const userData = {
-          idUsuariosSistema: Date.now(), // ID temporal
-          nombreUsuario: formData.nombreUsuario,
-          contrasenaHash: formData.contrasenaHash,
-          correo: formData.correo,
-          nombres: formData.nombres,
-          apellidos: formData.apellidos,
-          rolId: selectedRole === 'conductor' ? 3 : 2,
-          estado: "Activo",
-          fechaRegistro: new Date().toISOString(),
-          telefono: formData.telefono
+    try {
+      // Preparar datos según tu esquema de backend
+      const userData = {
+        nombreUsuario: formData.nombreUsuario,
+        contrasenaHash: formData.contrasenaHash,
+        correo: formData.correo,
+        nombres: formData.nombres,
+        apellidos: formData.apellidos,
+        rolId: selectedRole === 'conductor' ? 3 : 2,
+        telefono: formData.telefono
+      };
+
+      // Agregar datos del vehículo si es conductor
+      if (selectedRole === 'conductor') {
+        userData.vehiculo = {
+          placa: formData.placa,
+          modelo: formData.modelo,
+          anio: parseInt(formData.anio),
+          marca: formData.marca
         };
-
-        // Si es conductor, crear también el vehículo
-        if (selectedRole === 'conductor') {
-          const vehicleData = {
-            idVehiculo: Date.now() + 1,
-            placa: formData.placa,
-            modelo: formData.modelo,
-            anio: parseInt(formData.anio),
-            conductorId: userData.idUsuariosSistema,
-            marca: formData.marca
-          };
-
-          // Guardar vehículo en localStorage
-          const existingVehicles = JSON.parse(localStorage.getItem("vehicles")) || [];
-          localStorage.setItem("vehicles", JSON.stringify([...existingVehicles, vehicleData]));
-        }
-
-        // Guardar usuario en localStorage
-        const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
-        localStorage.setItem("users", JSON.stringify([...existingUsers, userData]));
-        
-        // También guardar en "user" para el login actual
-        localStorage.setItem("user", JSON.stringify(userData));
-        
-        console.log("✅ Usuario guardado en localStorage:", userData);
-        
-        setSuccess(true);
-        setLoading(false);
-
-        // Redirigir al Login después de 2s
-        setTimeout(() => {
-          navigate('/login');
-        }, 2000);
-
-      } catch (error) {
-        console.error("❌ Error al guardar en localStorage:", error);
-        setError('Error al crear la cuenta. Intenta de nuevo.');
-        setLoading(false);
       }
-    }, 1500);
+
+      const respuesta = await fetch("http://localhost:4000/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData)
+      });
+
+      const data = await respuesta.json();
+
+      if (!respuesta.ok) {
+        setError(data.message || 'Error al crear la cuenta');
+        setLoading(false);
+        return;
+      }
+
+      console.log("✅ Usuario registrado:", data);
+      
+      setSuccess(true);
+      setLoading(false);
+
+      // Redirigir al Login después de 2s
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000);
+
+    } catch (error) {
+      console.error("❌ Error al registrar:", error);
+      setError('Error de conexión. Verifica que el servidor esté activo.');
+      setLoading(false);
+    }
   };
 
   if (success) {

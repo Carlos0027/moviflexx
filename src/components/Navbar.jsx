@@ -1,97 +1,85 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import "./Navbar.css";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
+
+  // 🔒 Cerrar menú al cambiar de ruta
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
 
   return (
-    <nav className="navbar">
-      <div className="nav-container">
-        {/* Logo */}
-        <Link to="/" className="nav-logo">
-          <span className="logo-icon">MF</span>
-          MoviFlexx
+    <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+      <div className="container-fluid px-4">
+
+        {/* LOGO */}
+        <Link to="/" className="navbar-brand d-flex align-items-center">
+          <span className="logo-icon me-2">MF</span>
+          <span className="logo-text">MoviFlexx</span>
         </Link>
 
-        {/* Desktop Menu */}
-        <ul className="nav-links">
-        
-          <li>
-            <a href="#features">Features</a>
-          </li>
-          <li>
-            <a href="#about">Acerca de</a>
-          </li>
-          <li>
-            <a href="#contact">Contacto</a>
-          </li>
-        </ul>
-
-        {/* Auth Buttons */}
-        <div className="nav-auth">
-          <Link to="/login" className="nav-link-login">
-            Iniciar Sesión
-          </Link>
-          <Link to="/register" className="nav-btn-register">
-            Registrarse
-          </Link>
-        </div>
-
-        {/* Mobile Menu Button */}
+        {/* TOGGLER */}
         <button
-          className="menu-toggle"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
+          className="navbar-toggler border-0"
+          type="button"
+          aria-label="Toggle navigation"
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen(prev => !prev)}
         >
           {menuOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
-      </div>
 
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="mobile-menu">
-          <ul className="mobile-links">
-            <li>
-              <Link to="/" onClick={() => setMenuOpen(false)}>
+        {/* MENU */}
+        <div className={`collapse navbar-collapse ${menuOpen ? "show" : ""}`}>
+
+          {/* LINKS */}
+          <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
+            <li className="nav-item">
+              <NavLink to="/" end className="nav-link px-3">
                 Inicio
-              </Link>
+              </NavLink>
             </li>
-            <li>
-              <a href="#features" onClick={() => setMenuOpen(false)}>
+            <li className="nav-item">
+              <a href="#features" className="nav-link px-3">
                 Features
               </a>
             </li>
-            <li>
-              <a href="#about" onClick={() => setMenuOpen(false)}>
+            <li className="nav-item">
+              <a href="#about" className="nav-link px-3">
                 Acerca de
               </a>
             </li>
-            <li>
-              <a href="#contact" onClick={() => setMenuOpen(false)}>
+            <li className="nav-item">
+              <a href="#contact" className="nav-link px-3">
                 Contacto
               </a>
             </li>
           </ul>
-          <div className="mobile-auth">
-            <Link
+
+          {/* BOTONES AUTH */}
+          <div className="d-flex flex-column flex-lg-row gap-2 align-items-stretch align-items-lg-center">
+            <NavLink
               to="/login"
-              className="mobile-link-login"
-              onClick={() => setMenuOpen(false)}
+              className="btn btn-outline-primary px-4"
             >
               Iniciar Sesión
-            </Link>
-            <Link
+            </NavLink>
+
+            <NavLink
               to="/register"
-              className="mobile-btn-register"
-              onClick={() => setMenuOpen(false)}
+              className="btn btn-primary px-4"
             >
               Registrarse
-            </Link>
+            </NavLink>
           </div>
+
         </div>
-      )}
+      </div>
     </nav>
   );
 }
