@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { ChevronRight, MapPin, Users, Zap, Shield, Car, ArrowRight, Check, Star } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import "./HomeBase.css";
 
 export default function HomeBase() {
-  const navigate = useNavigate();
   const [hoveredFeature, setHoveredFeature] = useState(null);
 
   const features = [
@@ -12,28 +12,28 @@ export default function HomeBase() {
       icon: Car,
       title: "Rutas Compartidas",
       desc: "Conductores con rutas fijas de inicio a fin",
-      gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+      color: "from-blue-500 to-blue-600"
     },
     {
       id: 2,
       icon: Shield,
       title: "100% Seguro",
       desc: "Verificación de identidad y reseñas de usuarios",
-      gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"
+      color: "from-purple-500 to-purple-600"
     },
     {
       id: 3,
       icon: Users,
       title: "Comunidad",
       desc: "Conecta con viajeros de tu zona",
-      gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"
+      color: "from-pink-500 to-pink-600"
     },
     {
       id: 4,
       icon: Zap,
       title: "Economía",
       desc: "Reduce costos compartiendo gastos",
-      gradient: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)"
+      color: "from-orange-500 to-orange-600"
     }
   ];
 
@@ -68,57 +68,6 @@ export default function HomeBase() {
     }
   ];
 
-  const testimonials = [
-    {
-      name: "Juan Martínez",
-      role: "Pasajero verificado",
-      avatar: "JM",
-      text: "Excelente app, conductor amable y viaje seguro. ¡La recomiendo!",
-      rating: 5
-    },
-    {
-      name: "María Sánchez",
-      role: "Conductora verificada",
-      avatar: "MS",
-      text: "He recuperado dinero en mis viajes diarios. Muy buena experiencia.",
-      rating: 5
-    },
-    {
-      name: "Carlos Rodríguez",
-      role: "Pasajero verificado",
-      avatar: "CR",
-      text: "Seguridad, confiabilidad y precios justos. Perfecto para viajar.",
-      rating: 5
-    }
-  ];
-
-  const faqs = [
-    {
-      question: "¿Es seguro viajar en MoviFlexx?",
-      answer: "Sí, todos los usuarios son verificados, incluimos seguros en los viajes y tenemos calificaciones públicas."
-    },
-    {
-      question: "¿Cómo se fija el precio?",
-      answer: "Los conductores fijan el precio por asiento según la distancia y gastos. Es totalmente transparente."
-    },
-    {
-      question: "¿Puedo cancelar mi reserva?",
-      answer: "Sí, puedes cancelar hasta 2 horas antes del viaje con reembolso completo."
-    },
-    {
-      question: "¿Qué necesito para ser conductor?",
-      answer: "Licencia válida, documento de identidad, vehículo registrado y verificación de antecedentes."
-    },
-    {
-      question: "¿Hay comisión al conductor?",
-      answer: "Solo 10% de comisión en planes gratuitos. Sin comisión en planes Premium."
-    },
-    {
-      question: "¿Cómo reporto un problema?",
-      answer: "Contacta a nuestro equipo 24/7 desde la app o web. Resolvemos en menos de 24 horas."
-    }
-  ];
-
   return (
 
     
@@ -148,36 +97,22 @@ export default function HomeBase() {
               </button>
             </div>
 
-                <div className="d-flex align-items-center gap-3 text-muted">
-                  <div className="d-flex align-items-center gap-2">
-                    <Check size={18} className="text-success" />
-                    <small>Verificación de identidad</small>
-                  </div>
-                  <div className="d-flex align-items-center gap-2">
-                    <Check size={18} className="text-success" />
-                    <small>Seguros incluidos</small>
-                  </div>
-                  <div className="d-flex align-items-center gap-2">
-                    <Check size={18} className="text-success" />
-                    <small>24/7 Soporte</small>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-lg-6">
-                <div className="card border-0 shadow-purple" style={{ minHeight: '450px', borderRadius: '30px', background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)' }}>
-                  <div className="card-body d-flex flex-column align-items-center justify-content-center text-center p-5">
-                    <div className="bg-gradient-purple rounded-4 p-4 mb-4" style={{ width: '120px', height: '120px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <MapPin size={60} className="text-white" />
-                    </div>
-                    <h3 className="fw-bold mb-2">Conectando Viajeros</h3>
-                    <p className="text-muted">De forma segura y económica</p>
-                  </div>
-                </div>
-              </div>
+            <div className="hero-trust">
+              <p>✓ Verificación de identidad • ✓ Seguros incluidos • ✓ 24/7 Soporte</p>
             </div>
           </div>
-        </section>
+
+          <div className="hero-image-wrapper">
+            <div className="hero-image">
+              <div className="image-placeholder">
+                <MapPin size={80} />
+                <p>Conectando viajeros de forma segura</p>
+              </div>
+            </div>
+            <div className="image-glow"></div>
+          </div>
+        </div>
+      </section>
 
       {/* ==================== FEATURES SECTION ==================== */}
       <section id="features" className="features-section">
@@ -189,34 +124,28 @@ export default function HomeBase() {
             </p>
           </div>
 
-            <div className="row g-4">
-              {features.map((feature) => {
-                const IconComponent = feature.icon;
-                return (
-                  <div key={feature.id} className="col-md-6 col-lg-3">
-                    <div 
-                      className="card h-100 card-hover"
-                      onMouseEnter={() => setHoveredFeature(feature.id)}
-                      onMouseLeave={() => setHoveredFeature(null)}
-                      style={{ borderRadius: '20px' }}
-                    >
-                      <div className="card-body text-center p-4">
-                        <div 
-                          className="feature-icon-wrapper"
-                          style={{ background: feature.gradient }}
-                        >
-                          <IconComponent size={36} className="text-white" />
-                        </div>
-                        <h5 className="card-title fw-bold mb-2">{feature.title}</h5>
-                        <p className="card-text text-muted">{feature.desc}</p>
-                      </div>
-                    </div>
+          <div className="features-grid">
+            {features.map((feature) => {
+              const IconComponent = feature.icon;
+              return (
+                <div
+                  key={feature.id}
+                  className="feature-card"
+                  onMouseEnter={() => setHoveredFeature(feature.id)}
+                  onMouseLeave={() => setHoveredFeature(null)}
+                >
+                  <div className={`feature-icon bg-gradient-to-br ${feature.color}`}>
+                    <IconComponent size={32} />
                   </div>
-                );
-              })}
-            </div>
+                  <h3 className="feature-title">{feature.title}</h3>
+                  <p className="feature-desc">{feature.desc}</p>
+                  <div className={`feature-underline ${hoveredFeature === feature.id ? 'active' : ''}`}></div>
+                </div>
+              );
+            })}
           </div>
-        </section>
+        </div>
+      </section>
 
       {/* ==================== STATS SECTION ==================== */}
       <section className="stats-section">
@@ -247,52 +176,23 @@ export default function HomeBase() {
               <p>Crea tu cuenta como pasajero o conductor en segundos</p>
               <div className="work-icon">📝</div>
             </div>
-
-            <div className="row g-4 align-items-stretch">
-              <div className="col-lg-4">
-                <div className="card border-0 shadow-sm text-center h-100" style={{ borderRadius: '20px' }}>
-                  <div className="card-body p-4">
-                    <div className="bg-gradient-purple text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
-                         style={{ width: '70px', height: '70px', fontSize: '1.8rem', fontWeight: 'bold' }}>
-                      1
-                    </div>
-                    <h4 className="fw-bold mb-3">Regístrate</h4>
-                    <p className="text-muted mb-3">Crea tu cuenta como pasajero o conductor en segundos</p>
-                    <div style={{ fontSize: '3rem' }}>📝</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-lg-4">
-                <div className="card border-3 border-purple shadow-purple text-center h-100" style={{ borderRadius: '20px' }}>
-                  <div className="card-body p-4">
-                    <div className="bg-gradient-purple text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
-                         style={{ width: '70px', height: '70px', fontSize: '1.8rem', fontWeight: 'bold' }}>
-                      2
-                    </div>
-                    <h4 className="fw-bold mb-3">Busca o Crea</h4>
-                    <p className="text-muted mb-3">Busca rutas disponibles o crea tu propia ruta fija</p>
-                    <div style={{ fontSize: '3rem' }}>🗺️</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-lg-4">
-                <div className="card border-0 shadow-sm text-center h-100" style={{ borderRadius: '20px' }}>
-                  <div className="card-body p-4">
-                    <div className="bg-gradient-purple text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
-                         style={{ width: '70px', height: '70px', fontSize: '1.8rem', fontWeight: 'bold' }}>
-                      3
-                    </div>
-                    <h4 className="fw-bold mb-3">Viaja Seguro</h4>
-                    <p className="text-muted mb-3">Disfruta de viajes compartidos seguros y económicos</p>
-                    <div style={{ fontSize: '3rem' }}>🚗</div>
-                  </div>
-                </div>
-              </div>
+            <div className="work-arrow">→</div>
+            <div className="work-card">
+              <div className="work-number">2</div>
+              <h3>Busca o Crea</h3>
+              <p>Busca rutas disponibles o crea tu propia ruta fija</p>
+              <div className="work-icon">🗺️</div>
+            </div>
+            <div className="work-arrow">→</div>
+            <div className="work-card">
+              <div className="work-number">3</div>
+              <h3>Viaja Seguro</h3>
+              <p>Disfruta de viajes compartidos seguros y económicos</p>
+              <div className="work-icon">🚗</div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
       {/* ==================== PRICING SECTION ==================== */}
       <section id="pricing" className="pricing-section">
@@ -304,45 +204,38 @@ export default function HomeBase() {
             </p>
           </div>
 
-            <div className="row g-4 justify-content-center">
-              {plans.map((plan, index) => (
-                <div key={index} className="col-lg-4 col-md-6">
-                  <div className={`card h-100 ${plan.popular ? 'border-3 border-purple shadow-purple' : 'border-2 shadow-sm'}`} style={{ borderRadius: '20px', position: 'relative' }}>
-                    {plan.popular && (
-                      <div className="position-absolute top-0 start-50 translate-middle">
-                        <span className="badge text-white px-4 py-2" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', borderRadius: '20px' }}>Más Popular</span>
-                      </div>
-                    )}
-                    <div className="card-body p-4 pt-5">
-                      <h3 className="card-title fw-bold mb-3 text-center">{plan.name}</h3>
-                      <div className="text-center mb-4">
-                        <span className="display-4 fw-bold">{plan.price}</span>
-                        <span className="text-muted fs-5">{plan.period}</span>
-                      </div>
-
-                      <button 
-                        className={`btn ${plan.popular ? 'btn-purple' : 'btn-outline-purple'} w-100 mb-4 py-3 d-flex align-items-center justify-content-center gap-2`}
-                        onClick={() => navigate('/register')}
-                      >
-                        Elegir Plan
-                        <ArrowRight size={18} />
-                      </button>
-
-                      <ul className="list-unstyled">
-                        {plan.features.map((feature, idx) => (
-                          <li key={idx} className="mb-3 d-flex align-items-start gap-2">
-                            <Check size={20} className="text-success flex-shrink-0 mt-1" />
-                            <span>{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
+          <div className="pricing-grid">
+            {plans.map((plan, index) => (
+              <div
+                key={index}
+                className={`pricing-card ${plan.popular ? 'popular' : ''}`}
+              >
+                {plan.popular && <div className="popular-badge">Más Popular</div>}
+                
+                <h3 className="plan-name">{plan.name}</h3>
+                <div className="plan-price">
+                  <span className="price">{plan.price}</span>
+                  <span className="period">{plan.period}</span>
                 </div>
-              ))}
-            </div>
+
+                <button className={`plan-button ${plan.popular ? 'primary' : 'secondary'}`}>
+                  Elegir Plan
+                  <ArrowRight size={18} />
+                </button>
+
+                <div className="plan-features">
+                  {plan.features.map((feature, idx) => (
+                    <div key={idx} className="feature-item">
+                      <Check size={20} className="check-icon" />
+                      <span>{feature}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
-        </section>
+        </div>
+      </section>
 
       {/* ==================== TESTIMONIALS SECTION ==================== */}
       <section className="testimonials-section">
@@ -365,32 +258,32 @@ export default function HomeBase() {
               </div>
             </div>
 
-            <div className="row g-4">
-              {testimonials.map((testimonial, index) => (
-                <div key={index} className="col-lg-4">
-                  <div className="card border-0 shadow-sm h-100 card-hover" style={{ borderRadius: '20px' }}>
-                    <div className="card-body p-4">
-                      <div className="mb-3" style={{ fontSize: '1.3rem', color: '#ffc107' }}>
-                        {'★'.repeat(testimonial.rating)}
-                      </div>
-                      <p className="card-text fst-italic mb-4">"{testimonial.text}"</p>
-                      <div className="d-flex align-items-center gap-3">
-                        <div className="bg-gradient-purple text-white rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
-                             style={{ width: '55px', height: '55px', fontWeight: 'bold', fontSize: '1.1rem' }}>
-                          {testimonial.avatar}
-                        </div>
-                        <div>
-                          <h6 className="mb-0 fw-bold">{testimonial.name}</h6>
-                          <small className="text-muted">{testimonial.role}</small>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+            <div className="testimonial-card">
+              <div className="stars">⭐⭐⭐⭐⭐</div>
+              <p>"He recuperado dinero en mis viajes diarios. Muy buena experiencia."</p>
+              <div className="testimonial-author">
+                <div className="author-avatar">MS</div>
+                <div>
+                  <strong>María Sánchez</strong>
+                  <p>Conductora verificada</p>
                 </div>
-              ))}
+              </div>
+            </div>
+
+            <div className="testimonial-card">
+              <div className="stars">⭐⭐⭐⭐⭐</div>
+              <p>"Seguridad, confiabilidad y precios justos. Perfecto para viajar."</p>
+              <div className="testimonial-author">
+                <div className="author-avatar">CR</div>
+                <div>
+                  <strong>Carlos Rodríguez</strong>
+                  <p>Pasajero verificado</p>
+                </div>
+              </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
       {/* ==================== CTA SECTION ==================== */}
       <section id="contact" className="cta-section">
@@ -401,19 +294,18 @@ export default function HomeBase() {
               Únete a miles de viajeros que ya confían en MoviFlexx
             </p>
             
-            <div className="d-flex gap-3 justify-content-center flex-wrap">
-              <Link to="/register" className="btn btn-light btn-lg px-5 py-3 d-flex align-items-center gap-2 fw-bold text-decoration-none" style={{ borderRadius: '12px' }}>
+            <div className="cta-buttons">
+              <Link to="/register" className="btn-primary lg">
                 Registrarse Ahora
                 <ChevronRight size={20} />
               </Link>
-              <button className="btn btn-outline-light btn-lg px-5 py-3 fw-bold" style={{ borderRadius: '12px' }} onClick={() => {
-                document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
-              }}>
+              <button className="btn-secondary lg">
                 Contactar Soporte
               </button>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
       {/* ==================== FAQ SECTION ==================== */}
       <section className="faq-section">
@@ -428,20 +320,33 @@ export default function HomeBase() {
               <p>Sí, todos los usuarios son verificados, incluimos seguros en los viajes y tenemos calificaciones públicas.</p>
             </div>
 
-            <div className="row g-4">
-              {faqs.map((faq, index) => (
-                <div key={index} className="col-lg-4 col-md-6">
-                  <div className="card border-0 shadow-sm h-100 card-hover" style={{ borderRadius: '20px' }}>
-                    <div className="card-body p-4">
-                      <h5 className="card-title fw-bold mb-3">{faq.question}</h5>
-                      <p className="card-text text-muted">{faq.answer}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
+            <div className="faq-item">
+              <h4>¿Cómo se fija el precio?</h4>
+              <p>Los conductores fijan el precio por asiento según la distancia y gastos. Es totalmente transparente.</p>
+            </div>
+
+            <div className="faq-item">
+              <h4>¿Puedo cancelar mi reserva?</h4>
+              <p>Sí, puedes cancelar hasta 2 horas antes del viaje con reembolso completo.</p>
+            </div>
+
+            <div className="faq-item">
+              <h4>¿Qué necesito para ser conductor?</h4>
+              <p>Licencia válida, documento de identidad, vehículo registrado y verificación de antecedentes.</p>
+            </div>
+
+            <div className="faq-item">
+              <h4>¿Hay comisión al conductor?</h4>
+              <p>Solo 10% de comisión en planes gratuitos. Sin comisión en planes Premium.</p>
+            </div>
+
+            <div className="faq-item">
+              <h4>¿Cómo reporto un problema?</h4>
+              <p>Contacta a nuestro equipo 24/7 desde la app o web. Resolvemos en menos de 24 horas.</p>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
       {/* ==================== FOOTER ==================== */}
       <footer className="footer">
@@ -460,58 +365,39 @@ export default function HomeBase() {
               </div>
             </div>
 
-              <div className="col-lg-2 col-md-4">
-                <h6 className="fw-bold mb-3">Producto</h6>
-                <ul className="list-unstyled">
-                  <li className="mb-2">
-                    <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="btn btn-link text-white text-decoration-none opacity-75 p-0">
-                      Inicio
-                    </button>
-                  </li>
-                  <li className="mb-2">
-                    <button onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })} className="btn btn-link text-white text-decoration-none opacity-75 p-0">
-                      Features
-                    </button>
-                  </li>
-                  <li className="mb-2">
-                    <button onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })} className="btn btn-link text-white text-decoration-none opacity-75 p-0">
-                      Precios
-                    </button>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="col-lg-2 col-md-4">
-                <h6 className="fw-bold mb-3">Empresa</h6>
-                <ul className="list-unstyled">
-                  <li className="mb-2"><Link to="/blog" className="text-white text-decoration-none opacity-75">Blog</Link></li>
-                  <li className="mb-2"><Link to="/about" className="text-white text-decoration-none opacity-75">Sobre Nosotros</Link></li>
-                  <li className="mb-2"><Link to="/careers" className="text-white text-decoration-none opacity-75">Carreras</Link></li>
-                </ul>
-              </div>
-
-              <div className="col-lg-2 col-md-4">
-                <h6 className="fw-bold mb-3">Legal</h6>
-                <ul className="list-unstyled">
-                  <li className="mb-2"><Link to="/terms" className="text-white text-decoration-none opacity-75">Términos</Link></li>
-                  <li className="mb-2"><Link to="/privacy" className="text-white text-decoration-none opacity-75">Privacidad</Link></li>
-                  <li className="mb-2"><Link to="/support" className="text-white text-decoration-none opacity-75">Soporte</Link></li>
-                </ul>
-              </div>
+            <div className="footer-column">
+              <h4>Producto</h4>
+              <ul>
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Precios</a></li>
+              </ul>
             </div>
 
-            <div className="border-top border-white border-opacity-25 pt-4 text-center">
-              <p className="mb-0 opacity-75">&copy; 2025 MoviFlexx. Todos los derechos reservados.</p>
+            <div className="footer-column">
+              <h4>Empresa</h4>
+              <ul>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Sobre Nosotros</a></li>
+                <li><a href="#">Carreras</a></li>
+              </ul>
+            </div>
+
+            <div className="footer-column">
+              <h4>Legal</h4>
+              <ul>
+                <li><a href="#">Términos de Servicio</a></li>
+                <li><a href="#">Privacidad</a></li>
+                <li><a href="#">Soporte</a></li>
+              </ul>
             </div>
           </div>
-        </footer>
-      </div>
 
-      <script 
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
-        crossOrigin="anonymous"
-      />
-    </>
+          <div className="footer-bottom">
+            <p>&copy; 2025 MoviFlexx. Todos los derechos reservados.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 }
