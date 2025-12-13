@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/purity */
 import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './AutomaticReports.css';
 
 const AutomaticReports = () => {

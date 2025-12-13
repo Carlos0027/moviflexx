@@ -1,3 +1,6 @@
+/* ======================================= */
+/* CONTENEDOR GLOBAL           */
+/* ======================================= */
 .internal-chat {
   height: 80vh;
   max-width: 1200px;
@@ -7,13 +10,17 @@
   flex-direction: column;
 }
 
+/* ======================================= */
+/* HEADER                   */
+/* ======================================= */
 .chat-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
   padding-bottom: 15px;
-  border-bottom: 2px solid #e9ecef;
+  /* Cambio: Usamos un color de borde más suave para mantener la limpieza */
+  border-bottom: 1px solid #e0e0e0; 
 }
 
 .encryption-status {
@@ -33,37 +40,45 @@
 
 .security-info {
   font-size: 11px;
-  color: #666;
+  color: #1b1b1b; /* Cambio: Color más suave para el texto secundario */
   margin-top: 2px;
 }
 
+/* ======================================= */
+/* CHAT CONTAINER               */
+/* ======================================= */
 .chat-container {
   display: flex;
   flex: 1;
-  gap: 20px;
+  gap: 0; /* Cambio: Eliminamos el gap y usamos el border-right de la sidebar */
   background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  border-radius: 12px; /* Cambio: Bordes ligeramente más redondeados */
+  /* Cambio: Sombra más sutil y moderna */
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05); 
   overflow: hidden;
 }
 
+/* ======================================= */
+/* SIDEBAR                   */
+/* ======================================= */
 .users-sidebar {
   width: 300px;
   background: #f8f9fa;
   padding: 20px;
-  border-right: 1px solid #dee2e6;
+  border-right: 1px solid #e0e0e0; /* Cambio: Borde más suave */
 }
 
 .users-sidebar h3 {
-  margin-bottom: 20px;
+  margin-bottom: 25px; /* Cambio: Más espacio debajo del título */
   color: #333;
-  font-size: 16px;
+  font-size: 17px; /* Cambio: Tamaño un poco más grande */
+  font-weight: 600;
 }
 
 .users-list {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px; /* Cambio: Menos espacio entre ítems para lista densa */
 }
 
 .user-item {
@@ -71,8 +86,9 @@
   align-items: center;
   gap: 12px;
   padding: 10px;
-  border-radius: 8px;
+  border-radius: 6px;
   transition: background-color 0.2s;
+  cursor: pointer; /* UX: Indicamos que es interactivo */
 }
 
 .user-item:hover {
@@ -83,13 +99,15 @@
   position: relative;
   width: 40px;
   height: 40px;
-  background: #007bff;
+  /* Cambio: Degradado sutil en el color principal para darle profundidad */
+  background: linear-gradient(135deg, #007bff, #0056b3); 
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   font-weight: bold;
+  font-size: 16px;
 }
 
 .user-status {
@@ -98,26 +116,26 @@
   right: 0;
   width: 12px;
   height: 12px;
-  border: 2px solid white;
+  /* Cambio: Borde blanco más delgado */
+  border: 1.5px solid white; 
   border-radius: 50%;
-}
-
-.user-info {
-  display: flex;
-  flex-direction: column;
+  z-index: 10;
 }
 
 .user-name {
-  font-weight: bold;
+  font-weight: 600; /* Cambio: Usamos 600 para un look moderno */
   color: #333;
   font-size: 14px;
 }
 
 .user-role {
-  font-size: 12px;
-  color: #666;
+  font-size: 11px; /* Cambio: Ligeramente más pequeño para contraste */
+  color: #888; /* Cambio: Color más suave */
 }
 
+/* ======================================= */
+/* ÁREA DE MENSAJES             */
+/* ======================================= */
 .messages-area {
   flex: 1;
   display: flex;
@@ -130,13 +148,13 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px; /* Cambio: Menos espacio entre mensajes */
 }
 
 .message {
-  max-width: 70%;
-  padding: 15px;
-  border-radius: 15px;
+  max-width: 65%; /* Cambio: Ligeramente menos ancho para no llenar tanto la pantalla */
+  padding: 12px 18px; /* Cambio: Padding ajustado */
+  border-radius: 20px; /* Cambio: Bordes mucho más redondeados (estilo burbuja moderna) */
   position: relative;
 }
 
@@ -144,30 +162,38 @@
   align-self: flex-end;
   background: #007bff;
   color: white;
-  border-bottom-right-radius: 5px;
+  /* Cambio: Solo la esquina inferior derecha se ajusta a la forma del chat */
+  border-bottom-right-radius: 4px; 
 }
 
 .other-message {
   align-self: flex-start;
-  background: #f1f3f5;
+  background: #e9ecef; /* Cambio: Usamos un gris muy claro para el contraste */
   color: #333;
-  border-bottom-left-radius: 5px;
+  /* Cambio: Solo la esquina inferior izquierda se ajusta a la forma del chat */
+  border-bottom-left-radius: 4px; 
 }
 
 .message-header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 5px;
-  font-size: 12px;
+  gap: 8px;
+  margin-bottom: 3px;
+  font-size: 11px; /* Cambio: Información secundaria más pequeña */
 }
 
-.message-user {
-  font-weight: bold;
+.own-message .message-user,
+.own-message .message-time {
+  color: rgba(255, 255, 255, 0.9); /* Para que se vea en el fondo azul */
 }
 
-.message-time {
-  opacity: 0.8;
+.other-message .message-user {
+  font-weight: 700;
+  color: #007bff; /* Color principal para el nombre del remitente */
+}
+
+.other-message .message-time {
+  color: #888;
 }
 
 .encryption-indicator {
@@ -176,59 +202,87 @@
 
 .message-content p {
   margin: 0;
-  line-height: 1.4;
+  line-height: 1.5; /* Cambio: Mejorar la legibilidad */
 }
 
+/* ======================================= */
+/* INPUT Y FORMULARIO             */
+/* ======================================= */
 .message-input-form {
-  padding: 20px;
-  border-top: 1px solid #dee2e6;
-  background: #f8f9fa;
+  padding: 15px 20px;
+  border-top: 1px solid #ffffff; /* Cambio: Borde más suave */
+  
+  background: linear-gradient(90deg, #2507cf8e 0%, #6a1cb885 100%);
 }
 
 .input-container {
   display: flex;
   gap: 10px;
+  align-items: center;
   margin-bottom: 5px;
 }
 
 .message-input {
   flex: 1;
-  padding: 12px 15px;
-  border: 1px solid #ddd;
-  border-radius: 25px;
+  padding: 12px 20px;
+  border: 1px solid #363636;
+  border-radius: 30px; /* Cambio: Mayor redondez */
   font-size: 14px;
   outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background-color: rgb(255, 255, 255); /* Aseguramos fondo blanco */
 }
 
 .message-input:focus {
   border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15); /* Efecto de foco moderno */
 }
 
 .send-button {
   background: #007bff;
-  color: white;
+  color: rgb(255, 255, 255);
   border: none;
-  width: 45px;
-  height: 45px;
+  width: 48px; /* Cambio: Tamaño un poco más grande */
+  height: 48px; /* Cambio: Tamaño un poco más grande */
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.2s, transform 0.1s;
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.4);
 }
 
 .send-button:hover {
   background: #0056b3;
+  transform: translateY(-1px);
 }
 
 .send-icon {
-  font-size: 16px;
+  font-size: 18px; /* Cambio: Icono de envío más grande */
+  margin-left: 2px; /* Ajuste óptico para centrar el triángulo */
 }
 
 .security-notice {
-  text-align: center;
+  text-align: right; /* Cambio: Alinear a la derecha para no chocar con el input */
+  padding-right: 10px;
 }
 
 .security-notice small {
-  color: #666;
+  color: #1f1f1f;
+  font-size: 11px;
 }
+  .messages-container {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* CAMBIO: Aplicar el fondo minimalista */
+  background-color: #ffffff; /* Un blanco muy suave */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80' width='80' height='80'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)' opacity='.05'/%3E%3C/svg%3E");
+  background-size: 80px 80px;
+}
+/* ======================================= */
+/* FIN DEL ARCHIVO CSS             */

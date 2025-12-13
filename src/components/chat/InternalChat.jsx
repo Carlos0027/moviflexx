@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './InternalChat.css';
 
 const InternalChat = () => {
