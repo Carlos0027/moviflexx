@@ -1,99 +1,55 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Container, Navbar, Nav, Button } from "react-bootstrap";
 import "./Navbar.css";
 
-export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
-
+export default function Navigation() {
   return (
-    <nav className="navbar">
-      <div className="nav-container">
+    <Navbar expand="lg" className="navbar-custom py-3">
+      <Container>
         {/* Logo */}
-        <Link to="/" className="nav-logo">
-          <span className="logo-icon">MF</span>
+        <Navbar.Brand as={Link} to="/" className="nav-logo d-flex align-items-center">
+          <span className="logo-icon me-2">MF</span>
           MoviFlexx
-        </Link>
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          {/* Enlaces de navegación */}
+          <Nav className="mx-auto">
+            <Nav.Link as={Link} to="/" className="nav-link-custom">
+              Inicio
+            </Nav.Link>
+            <Nav.Link href="#features" className="nav-link-custom">
+              Features
+            </Nav.Link>
+            <Nav.Link href="#about" className="nav-link-custom">
+              Acerca de
+            </Nav.Link>
+            <Nav.Link href="#contact" className="nav-link-custom">
+              Contacto
+            </Nav.Link>
+          </Nav>
 
-        {/* Desktop Menu */}
-        <ul className="nav-links">
-          <li>
-            <Link to="/">Inicio</Link>
-          </li>
-          <li>
-            <a href="#features">Features</a>
-          </li>
-          <li>
-            <a href="#about">Acerca de</a>
-          </li>
-          <li>
-            <a href="#contact">Contacto</a>
-          </li>
-        </ul>
-
-        {/* Auth Buttons */}
-        <div className="nav-auth">
-          <Link to="/login" className="nav-link-login">
-            Iniciar Sesión
-          </Link>
-          <Link to="/register" className="nav-btn-register">
-            Registrarse
-          </Link>
-        </div>
-
-        {/* Mobile Menu Button */}
-        <button
-          className="menu-toggle"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
-        >
-          {menuOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="mobile-menu">
-          <ul className="mobile-links">
-            <li>
-              <Link to="/" onClick={() => setMenuOpen(false)}>
-                Inicio
-              </Link>
-            </li>
-            <li>
-              <a href="#features" onClick={() => setMenuOpen(false)}>
-                Features
-              </a>
-            </li>
-            <li>
-              <a href="#about" onClick={() => setMenuOpen(false)}>
-                Acerca de
-              </a>
-            </li>
-            <li>
-              <a href="#contact" onClick={() => setMenuOpen(false)}>
-                Contacto
-              </a>
-            </li>
-          </ul>
-          <div className="mobile-auth">
-            <Link
+          {/* Botones de autenticación */}
+          <div className="d-flex gap-3">
+            <Button
+              as={Link}
               to="/login"
-              className="mobile-link-login"
-              onClick={() => setMenuOpen(false)}
+              variant="outline-primary"
+              className="nav-link-login px-4"
             >
               Iniciar Sesión
-            </Link>
-            <Link
+            </Button>
+            <Button
+              as={Link}
               to="/register"
-              className="mobile-btn-register"
-              onClick={() => setMenuOpen(false)}
+              className="nav-btn-register px-4 btn-gradiente"
             >
               Registrarse
-            </Link>
+            </Button>
           </div>
-        </div>
-      )}
-    </nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 }

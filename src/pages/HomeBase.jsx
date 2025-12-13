@@ -69,15 +69,19 @@ export default function HomeBase() {
   ];
 
   return (
+
+    
     <div className="home-wrapper">
       {/* ==================== HERO SECTION ==================== */}
       <section id="inicio" className="hero-section">
         <div className="hero-container">
           <div className="hero-content">
-            <h1 className="hero-title">
-              Viaja Compartido
-              <span className="gradient-text"> Con Confianza</span>
-            </h1>
+            <h1 className="display-3 fw-bold mb-4">
+            <span className="text-dark">Viaja</span>{' '}
+            <span className="azul-rey">Compartido</span>{' '}
+            <span className="text-dark">Con</span>{' '}
+            <span className="morado-solido">Confianza</span>
+          </h1>
             <p className="hero-subtitle">
               La plataforma comunitaria donde conductores comparten rutas fijas 
               y pasajeros encuentran viajes seguros y económicos.
@@ -112,7 +116,7 @@ export default function HomeBase() {
 
       {/* ==================== FEATURES SECTION ==================== */}
       <section id="features" className="features-section">
-        <div className="section-container">
+        <div className="container-xxl">
           <div className="section-header">
             <h2 className="section-title">¿Por Qué Elegir MoviFlexx?</h2>
             <p className="section-subtitle">
@@ -145,7 +149,7 @@ export default function HomeBase() {
 
       {/* ==================== STATS SECTION ==================== */}
       <section className="stats-section">
-        <div className="section-container">
+        <div className="container-xxl">
           <div className="stats-grid">
             {stats.map((stat, index) => (
               <div key={index} className="stat-card">
@@ -159,7 +163,7 @@ export default function HomeBase() {
 
       {/* ==================== HOW IT WORKS ==================== */}
       <section className="how-works-section">
-        <div className="section-container">
+        <div className="container-xxl">
           <div className="section-header">
             <h2 className="section-title">¿Cómo Funciona?</h2>
             <p className="section-subtitle">Tres pasos simples para comenzar</p>
@@ -192,7 +196,7 @@ export default function HomeBase() {
 
       {/* ==================== PRICING SECTION ==================== */}
       <section id="pricing" className="pricing-section">
-        <div className="section-container">
+        <div className="container-xxl">
           <div className="section-header">
             <h2 className="section-title">Planes para Todos</h2>
             <p className="section-subtitle">
@@ -235,7 +239,7 @@ export default function HomeBase() {
 
       {/* ==================== TESTIMONIALS SECTION ==================== */}
       <section className="testimonials-section">
-        <div className="section-container">
+        <div className="container-xxl">
           <div className="section-header">
             <h2 className="section-title">Testimonios</h2>
             <p className="section-subtitle">Lo que dicen nuestros usuarios</p>
@@ -283,7 +287,7 @@ export default function HomeBase() {
 
       {/* ==================== CTA SECTION ==================== */}
       <section id="contact" className="cta-section">
-        <div className="section-container">
+        <div className="container-xxl">
           <div className="cta-content">
             <h2 className="cta-title">¿Listo para Ahorrar en Tus Viajes?</h2>
             <p className="cta-subtitle">
@@ -305,7 +309,7 @@ export default function HomeBase() {
 
       {/* ==================== FAQ SECTION ==================== */}
       <section className="faq-section">
-        <div className="section-container">
+        <div className="container-xxl">
           <div className="section-header">
             <h2 className="section-title">Preguntas Frecuentes</h2>
           </div>
@@ -346,7 +350,7 @@ export default function HomeBase() {
 
       {/* ==================== FOOTER ==================== */}
       <footer className="footer">
-        <div className="section-container">
+        <div className="container-xxl">
           <div className="footer-content">
             <div className="footer-column">
               <div className="footer-logo">

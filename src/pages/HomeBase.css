@@ -13,34 +13,14 @@
   --shadow-xl: 0 20px 50px rgba(15, 23, 42, 0.2);
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 html {
   scroll-behavior: smooth;
 }
-
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  color: var(--text-dark);
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  line-height: 1.6;
-}
-
 .home-wrapper {
   overflow-x: hidden;
   width: 100%;
 }
 
-.section-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 40px;
-}
 
 /* ==================== HERO SECTION ==================== */
 #inicio {
@@ -946,39 +926,6 @@ body {
   }
 }
 
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-60px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(60px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(60px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 @keyframes pulse {
   0%, 100% {
     opacity: 1;
@@ -1174,4 +1121,35 @@ body {
     grid-template-columns: 1fr;
     gap: 30px;
   }
+}
+/* ==================== COLORES PERSONALIZADOS ==================== */
+/* AZUL REY para "Compartido" */
+.azul-rey {
+  color: #1e40af !important;
+}
+
+/* MORADO SÓLIDO para "Confianza" */
+.morado-solido {
+  color: #8b5cf6 !important;
+}
+
+/* GRADIENTE azul rey a morado para botones */
+.btn-gradiente {
+  background: linear-gradient(135deg, #1e40af, #8b5cf6) !important;
+  border: none !important;
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+.btn-gradiente:hover {
+  background: linear-gradient(135deg, #1d4ed8, #7c3aed) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4) !important;
+}
+
+/* Para elementos destacados con gradiente */
+.destacado-gradiente {
+  background: linear-gradient(135deg, #1e40af, #8b5cf6) !important;
+  color: white !important;
+  border: none !important;
 }
