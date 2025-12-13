@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './TravelRequest.css';
+import { Container, Card, Form, Button, Row, Col } from 'react-bootstrap';
 
 const TravelRequest = () => {
   const [formData, setFormData] = useState({
@@ -26,106 +26,124 @@ const TravelRequest = () => {
   };
 
   return (
-    <div className="travel-request">
-      <h2>✈️ Solicitud de Viaje</h2>
-      <form onSubmit={handleSubmit} className="travel-form">
-        <div className="form-row">
-          <div className="form-group">
-            <label>Origen:</label>
-            <input
-              type="text"
-              name="origin"
-              value={formData.origin}
-              onChange={handleChange}
-              required
-              placeholder="Ciudad de origen"
-            />
-          </div>
+    <Container className="travel-request my-4">
+      <Card className="border-0 shadow">
+        <Card.Body>
+          <Card.Title as="h2" className="text-center mb-4">
+            Solicitud de Viaje
+          </Card.Title>
           
-          <div className="form-group">
-            <label>Destino:</label>
-            <input
-              type="text"
-              name="destination"
-              value={formData.destination}
-              onChange={handleChange}
-              required
-              placeholder="Ciudad de destino"
-            />
-          </div>
-        </div>
+          <Form onSubmit={handleSubmit}>
+            <Row className="mb-3">
+              <Col md={6}>
+                <Form.Group controlId="origin" className="mb-3">
+                  <Form.Label>Origen:</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="origin"
+                    value={formData.origin}
+                    onChange={handleChange}
+                    required
+                    placeholder="Ciudad de origen"
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group controlId="destination" className="mb-3">
+                  <Form.Label>Destino:</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="destination"
+                    value={formData.destination}
+                    onChange={handleChange}
+                    required
+                    placeholder="Ciudad de destino"
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
 
-        <div className="form-row">
-          <div className="form-group">
-            <label>Fecha de salida:</label>
-            <input
-              type="date"
-              name="departureDate"
-              value={formData.departureDate}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          
-          <div className="form-group">
-            <label>Fecha de regreso:</label>
-            <input
-              type="date"
-              name="returnDate"
-              value={formData.returnDate}
-              onChange={handleChange}
-              required
-            />
-          </div>
-        </div>
+            <Row className="mb-3">
+              <Col md={6}>
+                <Form.Group controlId="departureDate" className="mb-3">
+                  <Form.Label>Fecha de salida:</Form.Label>
+                  <Form.Control
+                    type="date"
+                    name="departureDate"
+                    value={formData.departureDate}
+                    onChange={handleChange}
+                    required
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group controlId="returnDate" className="mb-3">
+                  <Form.Label>Fecha de regreso:</Form.Label>
+                  <Form.Control
+                    type="date"
+                    name="returnDate"
+                    value={formData.returnDate}
+                    onChange={handleChange}
+                    required
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
 
-        <div className="form-group">
-          <label>Propósito del viaje:</label>
-          <select
-            name="purpose"
-            value={formData.purpose}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Seleccionar propósito</option>
-            <option value="business">Negocios</option>
-            <option value="vacation">Vacaciones</option>
-            <option value="training">Capacitación</option>
-            <option value="conference">Conferencia</option>
-          </select>
-        </div>
+            <Form.Group controlId="purpose" className="mb-3">
+              <Form.Label>Propósito del viaje:</Form.Label>
+              <Form.Select
+                name="purpose"
+                value={formData.purpose}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Seleccionar propósito</option>
+                <option value="business">Negocios</option>
+                <option value="vacation">Vacaciones</option>
+                <option value="training">Capacitación</option>
+                <option value="conference">Conferencia</option>
+              </Form.Select>
+            </Form.Group>
 
-        <div className="form-row">
-          <div className="form-group">
-            <label>Presupuesto estimado:</label>
-            <input
-              type="number"
-              name="budget"
-              value={formData.budget}
-              onChange={handleChange}
-              placeholder="COP"
-              min="0"
-            />
-          </div>
-          
-          <div className="form-group">
-            <label>Número de pasajeros:</label>
-            <input
-              type="number"
-              name="passengers"
-              value={formData.passengers}
-              onChange={handleChange}
-              min="1"
-              max="10"
-            />
-          </div>
-        </div>
+            <Row className="mb-3">
+              <Col md={6}>
+                <Form.Group controlId="budget" className="mb-3">
+                  <Form.Label>Presupuesto estimado:</Form.Label>
+                  <Form.Control
+                    type="number"
+                    name="budget"
+                    value={formData.budget}
+                    onChange={handleChange}
+                    placeholder="COP"
+                    min="0"
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group controlId="passengers" className="mb-3">
+                  <Form.Label>Número de pasajeros:</Form.Label>
+                  <Form.Control
+                    type="number"
+                    name="passengers"
+                    value={formData.passengers}
+                    onChange={handleChange}
+                    min="1"
+                    max="10"
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
 
-        <button type="submit" className="submit-btn">
-          Enviar Solicitud de Viaje
-        </button>
-      </form>
-    </div>
+            <div className="d-grid">
+              <Button variant="primary" type="submit" size="lg">
+                Enviar Solicitud de Viaje
+              </Button>
+            </div>
+          </Form>
+        </Card.Body>
+      </Card>
+    </Container>
   );
 };
 
