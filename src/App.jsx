@@ -1,12 +1,14 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { statesData } from './data'
+import Mapa from "./Map";
 import Navbar from "./components/Navbar";
 import HomeBase from "./pages/HomeBase";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Bienvenido from "./pages/Bienvenido";
 import Dashboard from "./pages/Dashboard";
-import Perfil from "./pages/Perfil"; // ← IMPORTAR EL COMPONENTE DE PERFIL
+import Perfil from "./pages/Perfil";
 import Admin from "./pages/Admin/Admin";
 import AdminConductores from "./pages/Admin/AdminConductores";
 import AdminUsuarios from "./pages/Admin/AdminUsuarios";
@@ -24,29 +26,24 @@ import "./App.css";
 
 function App() {
   return (
-    <Router>
+    <Mapa></Mapa>
+  );
+   {/*<Router>
       <Routes>
-        {/* Rutas de Admin (sin Navbar) */}
+
         <Route path="/admin" element={<Admin />} />
         <Route path="/admin/conductores" element={<AdminConductores />} />
         <Route path="/admin/usuarios" element={<AdminUsuarios />} />
         <Route path="/admin/vehiculos" element={<AdminVehiculos />} />
-
-        {/* RUTAS CON NAVBAR */}
         <Route path="/" element={<><Navbar /><HomeBase /></>} />
         <Route path="/login" element={<><Navbar /><Login /></>} />
         <Route path="/register" element={<><Navbar /><Register /></>} />
         <Route path="/bienvenido" element={<><Navbar /><Bienvenido /></>} />
         <Route path="/bienvenido-pasajero" element={<><Navbar /><Bienvenido /></>} />
         <Route path="/bienvenido-conductor" element={<><Navbar /><Bienvenido /></>} />
-
-        {/* RUTAS SIN NAVBAR (Dashboard & Módulos) */}
         <Route path="/dashboard" element={<Dashboard />} />
-        
-        {/* ← AGREGAR ESTA RUTA DE PERFIL */}
         <Route path="/perfil" element={<Perfil />} />
         
-        {/* Otras rutas de módulos */}
         <Route path="/solicitud-viaje" element={<SolicitudViaje />} />
         <Route path="/optimizacion-rutas" element={<OptimizacionRutas />} />
         <Route path="/viaje-compartido" element={<ViajeCompartido />} />
@@ -58,7 +55,7 @@ function App() {
         <Route path="/notificaciones-tickets" element={<NotificacionesTickets />} />
       </Routes>
     </Router>
-  );
+    */}
 }
 
 export default App;
