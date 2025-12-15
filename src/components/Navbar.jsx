@@ -1,97 +1,27 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
-import "./Navbar.css";
+import { Navbar, Container, Nav } from "react-bootstrap";
+import Logo from '../pages/Imagenes/LOGO.jpeg';
 
-export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
-
+export default function NavbarCustom() {
   return (
-    <nav className="navbar">
-      <div className="nav-container">
-        {/* Logo */}
-        <Link to="/" className="nav-logo">
-          <span className="logo-icon">MF</span>
-          MoviFlexx
-        </Link>
-
-        {/* Desktop Menu */}
-        <ul className="nav-links">
-        
-          <li>
-            <a href="#features">Features</a>
-          </li>
-          <li>
-            <a href="#about">Acerca de</a>
-          </li>
-          <li>
-            <a href="#contact">Contacto</a>
-          </li>
-        </ul>
-
-        {/* Auth Buttons */}
-        <div className="nav-auth">
-          <Link to="/login" className="nav-link-login">
-            Iniciar Sesión
-          </Link>
-          <Link to="/register" className="nav-btn-register">
-            Registrarse
-          </Link>
-        </div>
-
-        {/* Mobile Menu Button */}
-        <button
-          className="menu-toggle"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
-        >
-          {menuOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="mobile-menu">
-          <ul className="mobile-links">
-            <li>
-              <Link to="/" onClick={() => setMenuOpen(false)}>
-                Inicio
-              </Link>
-            </li>
-            <li>
-              <a href="#features" onClick={() => setMenuOpen(false)}>
-                Features
-              </a>
-            </li>
-            <li>
-              <a href="#about" onClick={() => setMenuOpen(false)}>
-                Acerca de
-              </a>
-            </li>
-            <li>
-              <a href="#contact" onClick={() => setMenuOpen(false)}>
-                Contacto
-              </a>
-            </li>
-          </ul>
-          <div className="mobile-auth">
-            <Link
-              to="/login"
-              className="mobile-link-login"
-              onClick={() => setMenuOpen(false)}
-            >
+    <Navbar bg="white" variant="light" expand="lg" className="border-bottom shadow-sm rounded">
+      <Container>
+        <Navbar.Brand as={Link} to="/">
+          <img src={Logo} height="40" className="me-2" /> 
+          <span className="fw-bold text-primary">MoviFlexx</span>
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="navbar-basico" />
+        <Navbar.Collapse id="navbar-basico">
+          <Nav className="ms-auto">
+            <Nav.Link as={Link} to="/login" className="fw-bold">
               Iniciar Sesión
-            </Link>
-            <Link
-              to="/register"
-              className="mobile-btn-register"
-              onClick={() => setMenuOpen(false)}
-            >
-              Registrarse
-            </Link>
-          </div>
-        </div>
-      )}
-    </nav>
+            </Nav.Link>
+            <Nav.Link as={Link} to="/register" className="btn text-white rounded-pill px-4" style={{ backgroundColor: '#9e61d8ff' }}> Registrarse
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 }

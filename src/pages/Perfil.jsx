@@ -6,7 +6,6 @@ import {
   ArrowLeft, Settings, Shield, FileText, CheckCircle,
   Activity, Target, Zap, Camera, Upload
 } from 'lucide-react';
-import './Perfil.css';
 
 export default function Perfil() {
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { statesData } from './data'
 import Mapa from "./Map";
 import Navbar from "./components/Navbar";
@@ -22,40 +22,31 @@ import ReportesAutomaticos from "./components/reports/AutomaticReports";
 import ChatInterno from "./components/chat/InternalChat";
 import SeguimientoConversaciones from "./components/notifications/ConversationTracker";
 import NotificacionesTickets from "./components/notifications/TicketNotifications";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 import "./App.css";
 
 function App() {
   return (
-    <Mapa></Mapa>
+    <AuthProvider>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<HomeBase />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
-   {/*<Router>
-      <Routes>
+}
 
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/admin/conductores" element={<AdminConductores />} />
-        <Route path="/admin/usuarios" element={<AdminUsuarios />} />
-        <Route path="/admin/vehiculos" element={<AdminVehiculos />} />
-        <Route path="/" element={<><Navbar /><HomeBase /></>} />
-        <Route path="/login" element={<><Navbar /><Login /></>} />
-        <Route path="/register" element={<><Navbar /><Register /></>} />
-        <Route path="/bienvenido" element={<><Navbar /><Bienvenido /></>} />
-        <Route path="/bienvenido-pasajero" element={<><Navbar /><Bienvenido /></>} />
-        <Route path="/bienvenido-conductor" element={<><Navbar /><Bienvenido /></>} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/perfil" element={<Perfil />} />
-        
-        <Route path="/solicitud-viaje" element={<SolicitudViaje />} />
-        <Route path="/optimizacion-rutas" element={<OptimizacionRutas />} />
-        <Route path="/viaje-compartido" element={<ViajeCompartido />} />
-        <Route path="/validacion-documentos" element={<ValidacionDocumentos />} />
-        <Route path="/soporte-tecnico" element={<SoporteTecnico />} />
-        <Route path="/reportes-automaticos" element={<ReportesAutomaticos />} />
-        <Route path="/chat-interno" element={<ChatInterno />} />
-        <Route path="/seguimiento-conversaciones" element={<SeguimientoConversaciones />} />
-        <Route path="/notificaciones-tickets" element={<NotificacionesTickets />} />
-      </Routes>
-    </Router>
-    */}
+function RequiredAuth({ children }) {
+  const { token } = useAuth();
+  if (!token) {
+    return <Navigate to="/login" />;
+  }
+  return children;
 }
 
 export default App;
