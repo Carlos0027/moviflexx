@@ -5,11 +5,16 @@ import Logo from '../pages/Imagenes/LOGO.jpeg';
 
 export default function NavbarCustom() {
   return (
-    <Navbar bg="white" variant="light" expand="lg" className="border-bottom shadow-sm rounded">
+    <Navbar bg="white" variant="light" expand="lg" className="border-bottom shadow border-3 rounded">
       <Container>
         <Navbar.Brand as={Link} to="/">
           <img src={Logo} height="40" className="me-2" /> 
-          <span className="fw-bold text-primary">MoviFlexx</span>
+          <span style={{background: 'linear-gradient(20deg, #6f42c1, #00a2ffff)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    display: 'inline-block'
+                  }}>MoviFlexx</span>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbar-basico" />
         <Navbar.Collapse id="navbar-basico">
@@ -17,7 +22,7 @@ export default function NavbarCustom() {
             <Nav.Link as={Link} to="/login" className="fw-bold">
               Iniciar Sesión
             </Nav.Link>
-            <Nav.Link as={Link} to="/register" className="btn text-white rounded-pill px-4" style={{ backgroundColor: '#9e61d8ff' }}> Registrarse
+            <Nav.Link as={Link} to="/register" className="btn text-white rounded-pill px-4" style={{background: 'linear-gradient(20deg, #6f42c1, #59c2ffff)'}}> Registrarse
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>

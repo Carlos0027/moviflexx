@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Row, Col, Card, Form, Button, Alert } from "react-bootstrap";
+import Navbar from '../components/Navbar';
+import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -14,7 +15,7 @@ function Login() {
         setError("");
         setSuccess("");
 
-        const respuesta = await fetch("http://localhost:4000/api/login", {
+        const respuesta = await fetch("http://localhost:3000/api/auth/login", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({email, password})
@@ -32,33 +33,26 @@ function Login() {
             }
             
             setSuccess("¡Login exitoso!");
-            navigate("/bienvenido");
+            navigate("/dashboard");
         } else {
             setError(data.message || 'Error al iniciar sesión');
         }
     }
 
     return (
-        <Container className="my-4">
-            <Row className="justify-content-center">
-                <Col xs={12} md={8} lg={6}>
+        <div style={{
+            background: 'linear-gradient(20deg, #b425e0ff, #00dfccff, #ecececff)', 
+            minHeight: '100vh',
+            minWidth: '100vw'}}>
+        <Navbar />
+            
+            <Row className="h-100 justify-content-center align-items-center mt-5">
+                <Col xs={12} md={6} lg={4}>
                     <Card className="shadow border-0">
                         <Card.Body className="p-4">
                             <Card.Title as="h2" className="text-center mb-4">
                                 Iniciar Sesión
                             </Card.Title>
-
-                            {error && (
-                                <Alert variant="danger" onClose={() => setError("")} dismissible>
-                                    {error}
-                                </Alert>
-                            )}
-                            {success && (
-                                <Alert variant="success" onClose={() => setSuccess("")} dismissible>
-                                    {success}
-                                </Alert>
-                            )}
-
                             <Form onSubmit={guardar}>
                                 <Form.Group className="mb-3" controlId="email">
                                     <Form.Label>Correo Electrónico</Form.Label>
@@ -75,14 +69,14 @@ function Login() {
                                     <Form.Label>Contraseña</Form.Label>
                                     <Form.Control
                                         type="password"
-                                        placeholder="••••••••"
+                                        placeholder="Ingrese su contraseña"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                         required
                                     />
                                 </Form.Group>
 
-                                <Button variant="primary" type="submit" size="lg" className="w-100">
+                                <Button style={{background: 'linear-gradient(20deg, #6f42c1, #59c2ffff)'}} type="submit" size="lg" className="w-100">
                                     Iniciar Sesión
                                 </Button>
                             </Form>
@@ -97,7 +91,7 @@ function Login() {
                     </Card>
                 </Col>
             </Row>
-        </Container>
+        </div>
     );
 }
 

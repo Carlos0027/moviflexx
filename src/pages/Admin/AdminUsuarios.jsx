@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import "./AdminConductores.css";
+import NavbarAdmin from "./NavAdmin";
+import { Container, Row, Col, Card, Table, Button, Badge } from "react-bootstrap";
 
 function AdminUsuarios(){
     const [usuarios, setUsuarios] = useState([]);
@@ -10,7 +10,7 @@ function AdminUsuarios(){
     }, []);
     
     async function traerUsuarios(){
-        await fetch("http://localhost:3000/api/usuarios",{
+        await fetch("",{
             method:"GET",
             headers: {
                 "Content-Type":"application/json"
@@ -20,7 +20,7 @@ function AdminUsuarios(){
     }
 
     async function eliminarUsuario(id) {
-        await fetch(`http://localhost:3000/api/usuarios/${id}`,{
+        await fetch(`http://localhost:3000/api/auth/usuarios/${id}`,{
             method: "DELETE",
             headers:{
                 "Content-Type":"application/json"
@@ -29,82 +29,84 @@ function AdminUsuarios(){
         traerUsuarios();
     }
 
-    // Función para formatear la fecha
-    const formatearFecha = (fecha) => {
-        return new Date(fecha).toLocaleDateString('es-ES', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
+    async function BloquearUsuario(id) {
+        await fetch(`http://localhost:3000/api/auth/usuarios/${id}/bloquear`,{
+            method: "PATCH",
+            headers:{
+                "Content-Type":"application/json"
+            }
         });
-    };
+        traerUsuarios();
+    }
+    
+    function getRolBadge(rolId) {
+        switch(rolId) {
+            case 1:
+                return <Badge bg="primary">Admin</Badge>;
+            case 2:
+                return <Badge bg="info">Conductor</Badge>;
+            case 3:
+                return <Badge bg="secondary">Pasajero</Badge>;
+        }
+    }
 
     return(
-        <div className="admin-conductores-container">
-            {/* Navbar */}
-            <div className="admin-nav">
-                <div className="nav-container">
-                    {/* Logo */}
-                    <Link to="/admin" className="nav-logo">
-                        <span className="logo-icon">MF</span>
-                        MoviFlexx
-                    </Link>
-                    <div className="nav-auth">
-                        <Link to="/" className="nav-link-login">
-                            Cerrar Sesión
-                        </Link>
-                    </div>
-                </div>
-            </div>
-
-            {/* Contenido */}
-            <div className="conductores-content">
-                <h1 className="page-title">Lista de Usuarios</h1>
+        <div
+        style={{
+        background: 'linear-gradient(20deg, #b425e0ff, #00dfccff, #ecececff)', 
+        minHeight: '100vh',
+        minWidth: '100vw'}}>
+            <NavbarAdmin />
+            <Container fluid className="py-4">
+                <Row className="mb-4">
+                    <Col>
+                        <h1 className="display-5 fw-bold">Lista de Usuarios</h1>
+                        <p className="text-muted">Administra los usuarios registrados en la plataforma</p>
+                    </Col>
+                </Row>
                 
-                {/* Tabla con estilos */}
-                <div className="table-container">
-                    <table className="conductores-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nombre Usuario</th>
-                                <th>Nombres</th>
-                                <th>Apellidos</th>
-                                <th>Correo</th>
-                                <th>Rol ID</th>
-                                <th>Estado</th>
-                                <th>Fecha Registro</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {usuarios.map((usuario) => (
-                                <tr key={usuario.idUsuariosSistema} className="table-row">
-                                    <td className="table-cell">{usuario.idUsuariosSistema}</td>
-                                    <td className="table-cell">{usuario.nombreUsuario}</td>
-                                    <td className="table-cell">{usuario.nombres}</td>
-                                    <td className="table-cell">{usuario.apellidos}</td>
-                                    <td className="table-cell">{usuario.correo}</td>
-                                    <td className="table-cell">{usuario.rolId}</td>
-                                    <td className="table-cell">
-                                        <span className={`estado-badge ${usuario.estado.toLowerCase()}`}>
-                                            {usuario.estado}
-                                        </span>
-                                    </td>
-                                    <td className="table-cell">{formatearFecha(usuario.fechaRegistro)}</td>
-                                    <td className="table-cell actions">
-                                        <button 
-                                            className="delete-btn"
-                                            onClick={() => eliminarUsuario(usuario.idUsuariosSistema)}
-                                        >
-                                            Eliminar
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                <Row>
+                    <Col>
+                        <Card className="shadow-sm">
+                            <Card.Body>
+                                <Table responsive hover>
+                                    <thead className="table-light">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Nombre</th>
+                                            <th>Email</th>
+                                            <th>Teléfono</th>
+                                            <th>Rol</th>
+                                            <th>Estado</th>
+                                            <th>Creado En</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {usuarios.map((usuario) => (
+                                            <tr>
+                                                <td className="fw-semibold">{usuario.idUsuarios}</td>
+                                                <td>{usuario.nombre}</td>
+                                                <td>{usuario.email}</td>
+                                                <td>{usuario.telefono || "No especificado"}</td>
+                                                <td>{getRolBadge(usuario.idRol)}</td>
+                                                <td>
+                                                    <Button variant="outline-danger" size="sm"onClick={() => eliminarUsuario(usuario.idUsuarios)}>
+                                                        Eliminar
+                                                    </Button>
+                                                    <Button variant="outline-danger" size="sm"onClick={() => BloquearUsuario(usuario.idUsuarios)}>
+                                                        {usuario.estado === 'BLOQUEADO' ? 'Desbloquear' : 'Bloquear'}
+                                                    </Button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </Table>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+            </Container>
         </div>
     )
 }

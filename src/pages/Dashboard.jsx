@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+{/*import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { User, LogOut, Settings, Bell, Menu, X } from "lucide-react";
 import "./Dashboard.css";
@@ -128,15 +128,12 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      {/* Navbar */}
       <nav className="dashboard-navbar">
         <div className="navbar-container">
           <div className="navbar-brand">
             <span className="brand-icon">🚗</span>
             <span className="brand-name">MoviFlexx</span>
           </div>
-
-          {/* Menu Mobile Toggle */}
           <button 
             className="mobile-menu-toggle"
             onClick={() => setShowMobileMenu(!showMobileMenu)}
@@ -145,7 +142,6 @@ const Dashboard = () => {
             {showMobileMenu ? <X size={24} /> : <Menu size={24} />}
           </button>
 
-          {/* Navbar Menu */}
           <div className={`navbar-menu ${showMobileMenu ? 'active' : ''}`}>
             <div className="navbar-links">
               <a href="/dashboard" className="nav-link active">
@@ -165,13 +161,11 @@ const Dashboard = () => {
             </div>
 
             <div className="navbar-actions">
-              {/* Notificaciones */}
               <button className="navbar-icon-btn" title="Notificaciones" aria-label="Notificaciones">
                 <Bell size={20} />
                 <span className="notification-badge">3</span>
               </button>
 
-              {/* User Menu */}
               <div className="user-menu-container">
                 <button 
                   className="user-menu-btn"
@@ -185,7 +179,6 @@ const Dashboard = () => {
                   <span className="user-name">{userName}</span>
                 </button>
 
-                {/* Dropdown Menu */}
                 {showUserMenu && (
                   <div className="user-dropdown">
                     <div className="dropdown-header">
@@ -286,7 +279,6 @@ const Dashboard = () => {
         </div>
       </footer>
 
-      {/* Overlay para cerrar menús */}
       {(showUserMenu || showMobileMenu) && (
         <div 
           className="menu-overlay"
@@ -301,4 +293,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Dashboard;*/}

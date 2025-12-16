@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import "./AdminConductores.css";
+import NavbarAdmin from "./NavAdmin";
+import { Container, Row, Col, Card, Table, Button, Badge } from "react-bootstrap";
 
 function AdminVehiculos(){
     const [vehiculos, setVehiculos] = useState([]);
@@ -10,7 +10,7 @@ function AdminVehiculos(){
     }, []);
     
     async function traerVehiculos(){
-        await fetch("http://localhost:3000/api/vehiculos",{
+        await fetch("",{
             method:"GET",
             headers: {
                 "Content-Type":"application/json"
@@ -20,7 +20,7 @@ function AdminVehiculos(){
     }
 
     async function eliminarVehiculo(id) {
-        await fetch(`http://localhost:3000/api/vehiculos/${id}`,{
+        await fetch(`http://localhost:3000/api/auth//${id}`,{
             method: "DELETE",
             headers:{
                 "Content-Type":"application/json"
@@ -28,64 +28,99 @@ function AdminVehiculos(){
         });
         traerVehiculos();
     }
+    
+    async function cambiarEstadoVehiculo(id) {
+        await fetch(`http://localhost:3000/api/auth//${id}/estado`,{
+            method: "PATCH",
+            headers:{
+                "Content-Type":"application/json"
+            }
+        });
+        traerVehiculos();
+    }
+    
+    function getEstadoBadge(estado) {
+        if (estado === 'ACTIVO') {
+            return <Badge bg="success">Activo</Badge>;
+        } else if (estado === 'INACTIVO') {
+            return <Badge bg="secondary">Inactivo</Badge>;
+        } else {
+            return <Badge bg="warning" text="dark">{estado}</Badge>;
+        }
+    }
+    
+    function formatearCapacidad(capacidad) {
+        return `${capacidad} pasajeros`;
+    }
 
     return(
-        <div className="admin-conductores-container">
-            {/* Navbar */}
-            <div className="admin-nav">
-                <div className="nav-container">
-                    {/* Logo */}
-                    <Link to="/admin" className="nav-logo">
-                        <span className="logo-icon">MF</span>
-                        MoviFlexx
-                    </Link>
-                    <div className="nav-auth">
-                        <Link to="/" className="nav-link-login">
-                            Cerrar Sesión
-                        </Link>
-                    </div>
-                </div>
-            </div>
-
-            {/* Contenido */}
-            <div className="conductores-content">
-                <h1 className="page-title">Lista de Vehículos</h1>
-                
-                {/* Tabla con estilos */}
-                <div className="table-container">
-                    <table className="conductores-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Placa</th>
-                                <th>Modelo</th>
-                                <th>Año</th>
-                                <th>ID Conductor</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {vehiculos.map((vehiculo) => (
-                                <tr key={vehiculo.idVehiculo} className="table-row">
-                                    <td className="table-cell">{vehiculo.idVehiculo}</td>
-                                    <td className="table-cell">{vehiculo.placa}</td>
-                                    <td className="table-cell">{vehiculo.modelo}</td>
-                                    <td className="table-cell">{vehiculo.anio}</td>
-                                    <td className="table-cell">{vehiculo.conductorId}</td>
-                                    <td className="table-cell actions">
-                                        <button 
-                                            className="delete-btn"
-                                            onClick={() => eliminarVehiculo(vehiculo.idVehiculo)}
-                                        >
-                                            Eliminar
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div
+        style={{
+        background: 'linear-gradient(20deg, #b425e0ff, #00dfccff, #ecececff)', 
+        minHeight: '100vh',
+        minWidth: '100vw'}}>
+            <NavbarAdmin />
+            <Container fluid className="py-4">
+                <Row className="mb-4">
+                    <Col>
+                        <h1 className="display-5 fw-bold">Lista de Vehículos</h1>
+                        <p className="text-muted">Administra los vehículos registrados en la plataforma</p>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Card className="shadow-sm">
+                            <Card.Body>
+                                <Table responsive hover>
+                                    <thead className="table-light">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>ID Usuario</th>
+                                            <th>Marca</th>
+                                            <th>Modelo</th>
+                                            <th>Placa</th>
+                                            <th>Capacidad</th>
+                                            <th>Estado</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {vehiculos.map((vehiculo) => (
+                                            <tr key={vehiculo.idVehiculos}>
+                                                <td className="fw-semibold">{vehiculo.idVehiculos}</td>
+                                                <td>{vehiculo.idUsuario}</td>
+                                                <td>{vehiculo.marca || "No especificado"}</td>
+                                                <td>{vehiculo.modelo || "No especificado"}</td>
+                                                <td>{vehiculo.placa || "Sin placa"}</td>
+                                                <td>{formatearCapacidad(vehiculo.capacidad)}</td>
+                                                <td>{getEstadoBadge(vehiculo.estado)}</td>
+                                                <td>
+                                                    <div className="d-flex gap-2">
+                                                        <Button 
+                                                            variant="outline-danger" 
+                                                            size="sm"
+                                                            onClick={() => eliminarVehiculo(vehiculo.idVehiculos)}
+                                                        >
+                                                            Eliminar
+                                                        </Button>
+                                                        <Button 
+                                                            variant="outline-warning" 
+                                                            size="sm"
+                                                            onClick={() => cambiarEstadoVehiculo(vehiculo.idVehiculos)}
+                                                        >
+                                                            {vehiculo.estado === 'ACTIVO' ? 'Desactivar' : 'Activar'}
+                                                        </Button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </Table>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+            </Container>
         </div>
     )
 }
