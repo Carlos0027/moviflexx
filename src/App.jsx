@@ -21,13 +21,13 @@ function App() {
           <Route path="/" element={<HomeBase />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/admin/conductores" element={<AdminConductores />} />
-          <Route path="/admin/usuarios" element={<AdminUsuarios />} />
-          <Route path="/admin/vehiculos" element={<AdminVehiculos />} />
-          <Route path="/admin/viajes" element={<Viajes/>} />
-          <Route path="/documentacion" element={<RegisterDocumentacion />} />
-          <Route path="/admin/documentacion" element={<AdminDocuments/>} />
+          <Route path="/dashboard" element={<RequiredAuth> <Dashboard /></RequiredAuth>} />
+          <Route path="/admin/conductores" element={<RequiredAuth> <AdminConductores /></RequiredAuth>} />
+          <Route path="/admin/usuarios" element={<RequiredAuth> <AdminUsuarios /></RequiredAuth>} />
+          <Route path="/admin/vehiculos" element={<RequiredAuth> <AdminVehiculos /></RequiredAuth>} />
+          <Route path="/admin/viajes" element={<RequiredAuth> <Viajes/></RequiredAuth>} />
+          <Route path="/documentacion" element={<RequiredAuth> <RegisterDocumentacion /></RequiredAuth>} />
+          <Route path="/admin/documentacion" element={<RequiredAuth> <AdminDocuments/></RequiredAuth>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
