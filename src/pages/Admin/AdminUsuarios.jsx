@@ -10,7 +10,7 @@ function AdminUsuarios(){
     }, []);
     
     async function traerUsuarios(){
-        await fetch("",{
+        await fetch("http://localhost:3000/api/auth/",{
             method:"GET",
             headers: {
                 "Content-Type":"application/json"

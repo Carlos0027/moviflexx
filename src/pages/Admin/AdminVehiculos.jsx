@@ -10,7 +10,7 @@ function AdminVehiculos(){
     }, []);
     
     async function traerVehiculos(){
-        await fetch("",{
+        await fetch("http://localhost:3000/api/auth/mis-vehiculos",{
             method:"GET",
             headers: {
                 "Content-Type":"application/json"
@@ -20,7 +20,7 @@ function AdminVehiculos(){
     }
 
     async function eliminarVehiculo(id) {
-        await fetch(`http://localhost:3000/api/auth//${id}`,{
+        await fetch(`http://localhost:3000/api/auth/:${id}`,{
             method: "DELETE",
             headers:{
                 "Content-Type":"application/json"
@@ -30,7 +30,7 @@ function AdminVehiculos(){
     }
     
     async function cambiarEstadoVehiculo(id) {
-        await fetch(`http://localhost:3000/api/auth//${id}/estado`,{
+        await fetch(`http://localhost:3000/api/auth/`,{
             method: "PATCH",
             headers:{
                 "Content-Type":"application/json"
@@ -47,10 +47,6 @@ function AdminVehiculos(){
         } else {
             return <Badge bg="warning" text="dark">{estado}</Badge>;
         }
-    }
-    
-    function formatearCapacidad(capacidad) {
-        return `${capacidad} pasajeros`;
     }
 
     return(

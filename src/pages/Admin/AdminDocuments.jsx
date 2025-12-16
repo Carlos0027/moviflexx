@@ -10,7 +10,7 @@ function AdminDocuments(){
     }, []);
     
     async function traerDocumentacion(){
-        await fetch("",{
+        await fetch("http://localhost:3000/api/auth/documentacion_mis/",{
             method:"GET",
             headers: {
                 "Content-Type":"application/json"
@@ -18,19 +18,9 @@ function AdminDocuments(){
         }).then(response => response.json())
         .then(data => setDocumentacion(data));
     }
-
-    async function eliminarDocumentacion(id) {
-        await fetch(`http://localhost:3000/api/auth//${id}`,{
-            method: "DELETE",
-            headers:{
-                "Content-Type":"application/json"
-            }
-        });
-        traerDocumentacion();
-    }
     
     async function cambiarEstadoDocumentacion(id) {
-        await fetch(`http://localhost:3000/api/auth//${id}/estado`,{
+        await fetch(`http://localhost:3000/api/auth/documentacion_validate/${id}/estado`,{
             method: "PATCH",
             headers:{
                 "Content-Type":"application/json"
