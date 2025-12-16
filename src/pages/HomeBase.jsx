@@ -57,7 +57,7 @@ function HomeBase() {
       </section>
 
       <section className="py-5 bg-light">
-        <Container style={{background: 'linear-gradient(20deg, #2551e0ff, #00dfccff, #939194ff)'}} className="p-4 rounded shadow">
+        <Container style={{background: 'linear-gradient(20deg, #00a2ffff, #00dfccff)'}} className="p-4 rounded shadow">
           <Row className="text-center mb-4">
             <Col>
               <h2 className="mb-3">¿Cómo Funciona?</h2>

@@ -6,8 +6,9 @@ import UsuariosImg from "../Imagenes/Usuarios.jpg";
 import VehiculosImg from "../Imagenes/vehiculo.png";
 import ConductoresImg from "../Imagenes/conductores.png"
 import Viajes from "../Imagenes/viajes.png";
+import Documentacion from "../Imagenes/Document.png";
 
-function Admin() {
+function Dashboard() {
   const navigate = useNavigate();
 
   const handleUsersClick = () => {
@@ -25,6 +26,10 @@ function Admin() {
   const handleTravelsClick = () => {
     navigate('/admin/viajes');
   };
+
+  const handleDocumentsClick = () => {
+    navigate('/admin/documentacion');
+  }
 
   return (
     <div style={{
@@ -132,10 +137,32 @@ function Admin() {
             </Card.Body>
           </Card>
         </Col>
+        <Col lg={3} md={6} className="mb-4">
+          <Card className="h-100 shadow-sm" onClick={handleDocumentsClick} style={{cursor: 'pointer'}}>
+            <Card.Body className="text-center p-4">
+              <img src={Documentacion} alt="Viajes" className="img-fluid mb-3" style={{maxHeight: '400px'}} />
+              <Card.Title className="mb-3">Documentos</Card.Title>
+              <Card.Text className="text-start">
+                <div className="mb-2">
+                  <span className="text-primary me-2">•</span>
+                  Documentos subidos: 
+                </div>
+                <div className="mb-2">
+                  <span className="text-primary me-2">•</span>
+                  Documentos verificados hoy:
+                </div>
+                <div>
+                  <span className="text-primary me-2">•</span>
+                  Documentos pendientes de revisión: 
+                </div>
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
       </Row>
     </Container>
     </div>
   );
 }
 
-export default Admin;
+export default Dashboard;

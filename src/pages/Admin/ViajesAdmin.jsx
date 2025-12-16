@@ -100,26 +100,7 @@ function AdminViajes(){
                                                 <td>{formatearFecha(viaje.fechaHoraSalida)}</td>
                                                 <td>{viaje.cuposTotales}</td>
                                                 <td>{viaje.cuposDisponibles}</td>
-                                                <td>{getEstadoBadge(viaje.estado)}</td>
                                                 <td>{formatearFecha(viaje.creadoEn)}</td>
-                                                <td>
-                                                    <div className="d-flex gap-2">
-                                                        <Button 
-                                                            variant="outline-danger" 
-                                                            size="sm"
-                                                            onClick={() => eliminarViaje(viaje.idViajes)}
-                                                        >
-                                                            Eliminar
-                                                        </Button>
-                                                        <Button 
-                                                            variant="outline-warning" 
-                                                            size="sm"
-                                                            onClick={() => cambiarEstadoViaje(viaje.idViajes)}
-                                                        >
-                                                            Cambiar Estado
-                                                        </Button>
-                                                    </div>
-                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>

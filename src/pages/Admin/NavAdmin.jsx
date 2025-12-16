@@ -16,15 +16,11 @@ function NavbarAdmin() {
     }
   };
 
-  const handleProfile = () => {
-    navigate("/admin/perfil");
-    setShowDropdown(false);
-  };
 
   return (
     <Navbar bg="white" variant="light" expand="lg" className="border-bottom shadow-sm rounded">
       <Container>
-        <Navbar.Brand as={Link} to="/admin">
+        <Navbar.Brand as={Link} to="/dashboard">
           <img src={Logo} height="40" className="me-2" /> 
           <span style={{
             background: 'linear-gradient(20deg, #6f42c1, #00a2ffff)',
@@ -71,13 +67,6 @@ function NavbarAdmin() {
               </Dropdown.Toggle>
 
               <Dropdown.Menu className="shadow border-0 mt-2">
-                <Dropdown.Item 
-                  onClick={handleProfile}
-                  className="d-flex align-items-center"
-                >
-                  <i className="bi bi-person me-2"></i>
-                  Perfil
-                </Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item 
                   onClick={handleLogout}
