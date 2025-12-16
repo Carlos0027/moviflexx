@@ -10,7 +10,9 @@ import AdminConductores from "./pages/Admin/AdminConductores";
 import AdminUsuarios from "./pages/Admin/AdminUsuarios";
 import AdminVehiculos from "./pages/Admin/AdminVehiculos";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import Viajes from "./pages/Admin/ViajesAdmin";
 import "./App.css";
+import AdminViajes from "./pages/Admin/ViajesAdmin";
 
 function App() {
   return (
@@ -25,6 +27,7 @@ function App() {
           <Route path="/admin/conductores" element={<AdminConductores />} />
           <Route path="/admin/usuarios" element={<AdminUsuarios />} />
           <Route path="/admin/vehiculos" element={<AdminVehiculos />} />
+          <Route path="/admin/viajes" element={<Viajes/>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

@@ -1,11 +1,11 @@
-import React from 'react';
+
 import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import NavbarAdmin from './NavAdmin';
 import UsuariosImg from "../Imagenes/Usuarios.jpg";
 import VehiculosImg from "../Imagenes/vehiculo.png";
-import ConductoresImg from "../Imagenes/conductores.png";
-import AlertasImg from "../Imagenes/image.png";
+import ConductoresImg from "../Imagenes/conductores.png"
+import Viajes from "../Imagenes/viajes.png";
 
 function Admin() {
   const navigate = useNavigate();
@@ -22,8 +22,8 @@ function Admin() {
     navigate('/admin/vehiculos');
   };
 
-  const handleAlertsClick = () => {
-    navigate('/admin/alertas');
+  const handleTravelsClick = () => {
+    navigate('/admin/viajes');
   };
 
   return (
@@ -39,16 +39,7 @@ function Admin() {
         </Col>
       </Row>
 
-      <Row>
-        <Col lg={3} md={6} className="mb-4">
-          <Card className="h-100 shadow border-2" onClick={handleAlertsClick} style={{cursor: 'pointer'}}>
-            <Card.Body className="text-center p-4">
-              <img src={AlertasImg} alt="Alertas" className="img-fluid mb-3" style={{maxHeight: '100px'}} />
-              <Card.Title className="mb-3">Alertas</Card.Title>
-              <Card.Text>Ver notificaciones y alertas del sistema</Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
+      <Row className="g-4 justify-content-center" style={{cursor: 'pointer'}}>
 
         <Col lg={3} md={6} className="mb-4">
           <Card className="h-100 shadow-sm" onClick={handleUsersClick} style={{cursor: 'pointer'}}>
@@ -113,6 +104,29 @@ function Admin() {
                 <div>
                   <span className="text-primary me-2">•</span>
                   Nuevos esta semana: 
+                </div>
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
+
+        <Col lg={3} md={6} className="mb-4">
+          <Card className="h-100 shadow-sm" onClick={handleTravelsClick} style={{cursor: 'pointer'}}>
+            <Card.Body className="text-center p-4">
+              <img src={Viajes} alt="Viajes" className="img-fluid mb-3" style={{maxHeight: '400px'}} />
+              <Card.Title className="mb-3">Viajes Reaizados</Card.Title>
+              <Card.Text className="text-start">
+                <div className="mb-2">
+                  <span className="text-primary me-2">•</span>
+                  Viajes realizados: 
+                </div>
+                <div className="mb-2">
+                  <span className="text-primary me-2">•</span>
+                  Viajes realizados hoy: 
+                </div>
+                <div>
+                  <span className="text-primary me-2">•</span>
+                  Viajes en esta semana: 
                 </div>
               </Card.Text>
             </Card.Body>

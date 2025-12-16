@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Navbar, Container, Nav, Button, Dropdown } from "react-bootstrap";
 import Logo from '../Imagenes/LOGO.jpeg';
+import Alert from '../Imagenes/image.png';
 import AdminIcon from '../Imagenes/image1.png';
 
 function NavbarAdmin() {
@@ -38,6 +39,17 @@ function NavbarAdmin() {
         
         <Navbar.Collapse id="navbar-admin">
           <Nav className="ms-auto align-items-center">
+            <Button 
+              variant="link"
+              className="p-0 me-3"
+            >
+              <img 
+                src={Alert} 
+                height="30" 
+                alt="Alertas"
+              />
+            </Button>
+
             <Dropdown 
               show={showDropdown} 
               onToggle={(isOpen) => setShowDropdown(isOpen)}
