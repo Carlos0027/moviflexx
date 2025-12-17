@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
 import NavbarAdmin from "./NavAdmin";
 import { Container, Row, Col, Card, Table, Button, Badge } from "react-bootstrap";
 
 function AdminUsuarios(){
+    const { token } = useAuth();
     const [usuarios, setUsuarios] = useState([]);
     
     useEffect(()=> {
@@ -10,10 +12,11 @@ function AdminUsuarios(){
     }, []);
     
     async function traerUsuarios(){
-        await fetch("http://localhost:3000/api/auth/",{
+        await fetch("http://backendmovi-production.up.railway.app/api/auth",{
             method:"GET",
             headers: {
-                "Content-Type":"application/json"
+                "Content-Type":"application/json",
+                "Authorization":"Bearer "+token
             }
         }).then(response => response.json())
         .then(data => setUsuarios(data));
@@ -23,17 +26,19 @@ function AdminUsuarios(){
         await fetch(`http://localhost:3000/api/auth/usuarios/${id}`,{
             method: "DELETE",
             headers:{
-                "Content-Type":"application/json"
+                "Content-Type":"application/json",
+                "Authorization":"Bearer "+token
             }
         });
         traerUsuarios();
     }
 
     async function BloquearUsuario(id) {
-        await fetch(`http://localhost:3000/api/auth/usuarios/${id}/bloquear`,{
+        await fetch(`http://backendmovi-production.up.railway.app${id}/estado`,{
             method: "PATCH",
             headers:{
-                "Content-Type":"application/json"
+                "Content-Type":"application/json",
+                "Authorization":"Bearer "+token
             }
         });
         traerUsuarios();
@@ -95,7 +100,7 @@ function AdminUsuarios(){
                                                         Eliminar
                                                     </Button>
                                                     <Button variant="outline-danger" size="sm"onClick={() => BloquearUsuario(usuario.idUsuarios)}>
-                                                        {usuario.estado === 'BLOQUEADO' ? 'Desbloquear' : 'Bloquear'}
+                                                        {usuario.estado === 'INACTIVO' ? 'ACTIVAR' : 'Desactivar'}
                                                     </Button>
                                                 </td>
                                             </tr>

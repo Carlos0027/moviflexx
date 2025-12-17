@@ -1,41 +1,44 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "./context/AuthContext";
 import Navbar from '../components/Navbar';
-import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
+import { Row, Col, Card, Form, Button } from "react-bootstrap";
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     async function guardar(e) {
         e.preventDefault();
         setError("");
         setSuccess("");
+        setLoading(true);
 
-        const respuesta = await fetch("http://localhost:3000/api/auth/login", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({email, password})
-        });
+        try {
+            const respuesta = await fetch("http://backendmovi-production.up.railway.app/api/auth/login", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({email, password})
+            });
 
-        const data = await respuesta.json();
-        console.log(data);
+            const data = await respuesta.json();
 
-        if (respuesta.ok) {
-            if (data.token) {
-                localStorage.setItem('token', data.token);
+            if (respuesta.ok) {
+                login(data.token, data.usuario);
+                setSuccess("¡Login exitoso!");
+                navigate("/dashboard");
+            } else {
+                setError(data.message || 'Error al iniciar sesión');
             }
-            if (data.usuario?.nombre) {
-                localStorage.setItem('userName', data.usuario.nombre);
-            }
-            
-            setSuccess("¡Login exitoso!");
-            navigate("/dashboard");
-        } else {
-            setError(data.message || 'Error al iniciar sesión');
+        } catch (error) {
+            setError('Error en la conexión');
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -53,6 +56,17 @@ function Login() {
                             <Card.Title as="h2" className="text-center mb-4">
                                 Iniciar Sesión
                             </Card.Title>
+                            {error && (
+                                <div className="alert alert-danger" role="alert">
+                                    {error}
+                                </div>
+                            )}
+                            
+                            {success && (
+                                <div className="alert alert-success" role="alert">
+                                    {success}
+                                </div>
+                            )}                           
                             <Form onSubmit={guardar}>
                                 <Form.Group className="mb-3" controlId="email">
                                     <Form.Label>Correo Electrónico</Form.Label>
@@ -62,6 +76,7 @@ function Login() {
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         required
+                                        disabled={loading}
                                     />
                                 </Form.Group>
 
@@ -73,11 +88,18 @@ function Login() {
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                         required
+                                        disabled={loading}
                                     />
                                 </Form.Group>
 
-                                <Button style={{background: 'linear-gradient(20deg, #6f42c1, #59c2ffff)'}} type="submit" size="lg" className="w-100">
-                                    Iniciar Sesión
+                                <Button 
+                                    style={{background: 'linear-gradient(20deg, #6f42c1, #59c2ffff)'}} 
+                                    type="submit" 
+                                    size="lg" 
+                                    className="w-100"
+                                    disabled={loading}
+                                >
+                                    {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
                                 </Button>
                             </Form>
 

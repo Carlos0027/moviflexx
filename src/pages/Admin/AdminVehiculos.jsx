@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
 import NavbarAdmin from "./NavAdmin";
 import { Container, Row, Col, Card, Table, Button, Badge } from "react-bootstrap";
 
 function AdminVehiculos(){
+    const { token } = useAuth();
     const [vehiculos, setVehiculos] = useState([]);
     
     useEffect(()=> {
@@ -13,7 +15,8 @@ function AdminVehiculos(){
         await fetch("http://localhost:3000/api/auth/mis-vehiculos",{
             method:"GET",
             headers: {
-                "Content-Type":"application/json"
+                "Content-Type":"application/json",
+                "Authorization":"Bearer "+token
             }
         }).then(response => response.json())
         .then(data => setVehiculos(data));
@@ -23,7 +26,8 @@ function AdminVehiculos(){
         await fetch(`http://localhost:3000/api/auth/:${id}`,{
             method: "DELETE",
             headers:{
-                "Content-Type":"application/json"
+                "Content-Type":"application/json",
+                "Authorization":"Bearer "+token
             }
         });
         traerVehiculos();
@@ -33,7 +37,8 @@ function AdminVehiculos(){
         await fetch(`http://localhost:3000/api/auth/`,{
             method: "PATCH",
             headers:{
-                "Content-Type":"application/json"
+                "Content-Type":"application/json",
+                "Authorization":"Bearer "+token
             }
         });
         traerVehiculos();
@@ -47,6 +52,13 @@ function AdminVehiculos(){
         } else {
             return <Badge bg="warning" text="dark">{estado}</Badge>;
         }
+    }
+
+    function formatearCapacidad(capacidad) {
+        if (capacidad) {
+            return `${capacidad} personas`;
+        }
+        return "No especificado";
     }
 
     return(
@@ -104,7 +116,7 @@ function AdminVehiculos(){
                                                             size="sm"
                                                             onClick={() => cambiarEstadoVehiculo(vehiculo.idVehiculos)}
                                                         >
-                                                            {vehiculo.estado === 'ACTIVO' ? 'Desactivar' : 'Activar'}
+                                                            {vehiculo.estado === 'ACTIVO' ? '' : 'Activar'}
                                                         </Button>
                                                     </div>
                                                 </td>

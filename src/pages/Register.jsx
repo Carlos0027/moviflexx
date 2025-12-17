@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "./context/AuthContext";
 import { Container, Row, Col, Card, Form, Button, Alert } from "react-bootstrap";
 import Navbar from '../components/Navbar';
 
 function Register() {
     const navigate = useNavigate();
+    const { guardarToken, guardarUsuario } = useAuth();
     const [nombre, setNombre] = useState("");
     const [email, setEmail] = useState("");
     const [telefono, setTelefono] = useState("");
@@ -17,7 +19,7 @@ function Register() {
         e.preventDefault();
         setError("");
         setSuccess("");
-        const respuesta = await fetch("http://localhost:3000/api/auth/registro", {
+        const respuesta = await fetch("http://backendmovi-production.up.railway.app/api/auth/registro", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({nombre, email, telefono, password, idRol})
@@ -28,10 +30,10 @@ function Register() {
 
         if (respuesta.ok) {
             if (data.token) {
-                localStorage.setItem('token', data.token);
+                guardarToken(data.token);
             }
-            if (data.usuario?.nombre) {
-                localStorage.setItem('userName', data.usuario.nombre);
+            if (data.usuario) {
+                guardarUsuario(data.usuario);
             }
 
             setSuccess("¡Registro exitoso!");

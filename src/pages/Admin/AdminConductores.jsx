@@ -13,7 +13,8 @@ function AdminConductores(){
         await fetch("http://localhost:3000/api/",{
             method:"GET",
             headers: {
-                "Content-Type":"application/json"
+                "Content-Type":"application/json",
+                "Authorization":"Bearer "+token
             }
         }).then(response => response.json())
         .then(data => setConductores(data));
@@ -23,7 +24,8 @@ function AdminConductores(){
         await fetch(`http://localhost:3000/api//${id}`,{
             method: "DELETE",
             headers:{
-                "Content-Type":"application/json"
+                "Content-Type":"application/json",
+                "Authorization":"Bearer "+token
             }
         });
         traerConductores();
@@ -33,7 +35,8 @@ function AdminConductores(){
         await fetch(`http://localhost:3000/api//${id}`,{
             method: "PATCH",
             headers:{
-                "Content-Type":"application/json"
+                "Content-Type":"application/json",
+                "Authorization":"Bearer "+token
             }
         });
         traerConductores();

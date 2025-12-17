@@ -13,7 +13,8 @@ function AdminDocuments(){
         await fetch("http://localhost:3000/api/auth/documentacion_mis/",{
             method:"GET",
             headers: {
-                "Content-Type":"application/json"
+                "Content-Type":"application/json",
+                "Authorization":"Bearer "+token
             }
         }).then(response => response.json())
         .then(data => setDocumentacion(data));
@@ -23,7 +24,8 @@ function AdminDocuments(){
         await fetch(`http://localhost:3000/api/auth/documentacion_validate/${id}/estado`,{
             method: "PATCH",
             headers:{
-                "Content-Type":"application/json"
+                "Content-Type":"application/json",
+                "Authorization":"Bearer "+token
             }
         });
         traerDocumentacion();

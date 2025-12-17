@@ -14,6 +14,11 @@ export const AuthProvider = ({ children }) => {
     setUsuario(datosUsuario);
   };
 
+  const login = (tk, datosUsuario) => {
+    guardarToken(tk);
+    guardarUsuario(datosUsuario);
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -21,6 +26,7 @@ export const AuthProvider = ({ children }) => {
         guardarToken,
         usuario,
         guardarUsuario,
+        login,
       }}
     >
       {children}
