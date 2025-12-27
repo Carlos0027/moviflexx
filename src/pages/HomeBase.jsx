@@ -10,7 +10,7 @@ function HomeBase() {
         background: 'linear-gradient(20deg, #b425e0ff, #00dfccff, #ecececff)', 
         minHeight: '100vh',
         minWidth: '100vw'}}>
-      <Navbar />
+      <Navbar/>
       <section className="py-5" >
         <Container>
           <Row className="align-items-center">
@@ -22,7 +22,6 @@ function HomeBase() {
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
-                    display: 'inline-block'
                   }}
                 >Compartido
                 </span>
@@ -48,7 +47,7 @@ function HomeBase() {
             <Col lg={6}>
               <Card>
                 <Card.Body className="p-4 text-center">
-                  <Mapa />
+                  <Mapa/>
                 </Card.Body>
               </Card>
             </Col>
@@ -95,13 +94,7 @@ function HomeBase() {
           </Row>
           <Row className="mt-5">
             <Col className="text-center">
-              <Image 
-                src={imagen}
-                fluid
-                rounded
-                className="shadow"
-                style={{ maxHeight: '800px', width: '1200px' }}
-              />
+              <Image src={imagen} fluid rounded className="shadow"style={{ maxHeight: '800px', width: '1200px' }}/>
               <p className="display-6 fw-bold text-white">Únete a nuestra comunidad de viajeros confiables</p>
             </Col>
           </Row>
